@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 
 
 @Component
-public class AuthorizedResponseAuthentication implements AuthenticationEntryPoint, Serializable {
+public class UnAuthorizedResponseAuthentication implements AuthenticationEntryPoint, Serializable {
 
   private static final long serialVersionUID = -8970718410437077606L;
 
@@ -22,7 +22,8 @@ public class AuthorizedResponseAuthentication implements AuthenticationEntryPoin
 	 
     //response.sendError(HttpServletResponse.SC_UNAUTHORIZED,
    //     "You would need to provide the Jwt Token to Access This ressrce");
-    response.sendRedirect("http://localhost:4200");
+    //TODO - make it dynamic
+	  response.sendRedirect("http://localhost:4200");
   }
 }
 

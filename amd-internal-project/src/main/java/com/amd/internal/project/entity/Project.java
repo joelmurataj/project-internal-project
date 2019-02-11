@@ -32,7 +32,7 @@ public class Project implements Serializable{
 	@Column(name = "price_per_month", nullable = false, length = 4)
 	private int pricePerMonth;
 	
-	@Temporal(TemporalType.DATE)
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "start_date")
 	private Date startDate;
 	

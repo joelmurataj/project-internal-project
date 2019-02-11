@@ -13,10 +13,11 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import com.amd.internal.project.service.UserService;
 
 @Configuration
 @EnableWebSecurity
@@ -24,13 +25,13 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    private AuthorizedResponseAuthentication jwtUnAuthorizedResponseAuthenticationEntryPoint;
+    private UnAuthorizedResponseAuthentication unAuthorizedResponseAuthentication;
 
     @Autowired
-    private UserDetailsService jwtInMemoryUserDetailsService;
+    private UserService jwtInMemoryUserDetailsService;
 
     @Autowired
-    private AuthorizationFilter jwtAuthenticationTokenFilter;
+    private AuthorizationFilter authenticationTokenFilter;
 
     @Value("${jwt.get.token.uri}")
     private String authenticationPath;
@@ -57,13 +58,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
             .csrf().disable()
-            .exceptionHandling().authenticationEntryPoint(jwtUnAuthorizedResponseAuthenticationEntryPoint).and()
+            .exceptionHandling().authenticationEntryPoint(unAuthorizedResponseAuthentication).and()
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
             .authorizeRequests()//.permitAll()//.antMatchers("/projects").access("hasRole('manager')").antMatchers("/projects*").permitAll()
             .anyRequest().authenticated();
 
        httpSecurity
-            .addFilterBefore(jwtAuthenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);
+            .addFilterBefore(authenticationTokenFilter, UsernamePasswordAuthenticationFilter.class);
         
 //        httpSecurity
 //            .headers()

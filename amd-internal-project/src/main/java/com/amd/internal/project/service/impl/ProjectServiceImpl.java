@@ -3,6 +3,7 @@ package com.amd.internal.project.service.impl;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,31 +32,40 @@ public class ProjectServiceImpl implements ProjectService {
 
 	@Override
 	@Transactional
-	public List<Project> findAll() {
-		return projectdao.findByFlag(true);
+	public List<ProjectDto> findAll() {
+		return ProjectConverter
+				.toProjectListDto(projectdao.findByFlag(true, new Sort(Sort.Direction.DESC, "startDate")));
 	}
 
 	@Override
 	@Transactional
 	public void save(Project project) {
-		projectdao.save(project);
-
+		ProjectDto projectDto = projectdao.findByName(project.getName());
+		if (projectDto == null) {
+			projectdao.save(project);
+		}
 	}
 
 	@Override
 	@Transactional
-	public Project deleteProject(int projectId) {
+	public ProjectDto deleteProject(int projectId) {
 		Project project = projectdao.findById(projectId).get();
 		project.setFlag(false);
-		projectdao.saveAndFlush(project);
-		return project;
+
+		return ProjectConverter.toProjectDto(project);
 	}
 
 	@Override
 	@Transactional
-	public Project updateProject(Project project) {
+	public ProjectDto updateProject(Project project) {
 		projectdao.saveAndFlush(project);
-		return project;
+		return ProjectConverter.toProjectDto(project);
+	}
+
+	@Override
+	public List<ProjectDto> searchByName(String name) {
+		List<Project> project =projectdao.searchByName(name);
+		return ProjectConverter.toProjectListDto(project);
 	}
 
 }

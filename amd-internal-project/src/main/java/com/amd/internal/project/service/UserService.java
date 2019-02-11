@@ -1,12 +1,17 @@
 package com.amd.internal.project.service;
 
-import org.springframework.security.core.userdetails.UserDetails;
+import java.util.List;
+
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import com.amd.internal.project.dto.UserDto;
 
-public interface UserService {
+public interface UserService extends UserDetailsService{
 
 	public UserDto findByEmail(String email);
-	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException;
+	public UserDto loadUserByUsername(String username) throws UsernameNotFoundException;
+	public List<UserDto> findByProjectId(int id);
+	public List<UserDto> findByRole();
+	public UserDto updateUser(Integer projectId,String email);
 }

@@ -2,8 +2,6 @@ package com.amd.internal.project.controller;
 
 import java.util.List;
 
-//import org.ocpsoft.rewrite.annotation.Join;
-//import org.ocpsoft.rewrite.el.ELBeanName;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,10 +17,6 @@ import com.amd.internal.project.dto.ProjectDto;
 import com.amd.internal.project.entity.Project;
 import com.amd.internal.project.service.ProjectService;
 
-//@Scope(value = "session")
-//@Component(value = "productController")
-//@ELBeanName(value = "productController")
-//@Join(path = "/project", to = "/project-form.jsf")
 @RestController
 @CrossOrigin(origins = "${urlString}")
 public class ProjectController {
@@ -30,18 +24,17 @@ public class ProjectController {
 	@Autowired
 	private ProjectService projectService;
 
-	// @PreAuthorize("hasRole('manager')")
-	// @Secured("managerax")
 	@PreAuthorize("hasAuthority('manager')")
 	@RequestMapping(path = "/projects", method = RequestMethod.GET)
-	public List<Project> getAllProject() {
+	public List<ProjectDto> getAllProject() {
+
 		return projectService.findAll();
 	}
 
 	@PreAuthorize("hasAuthority('manager')")
 	@RequestMapping(path = "/projects/{id}", method = RequestMethod.GET)
 	public ResponseEntity<Void> deleteById(@PathVariable int id) {
-		Project project = projectService.deleteProject(id);
+		ProjectDto project = projectService.deleteProject(id);
 		if (project != null) {
 			return ResponseEntity.noContent().build();
 		} else {
@@ -55,7 +48,7 @@ public class ProjectController {
 		return projectService.findById(id);
 	}
 	
-	@PreAuthorize("hasAuthority('employee')")
+	//@PreAuthorize("hasAuthority('employee')")
 	@RequestMapping(path = "/project/{id}", method = RequestMethod.GET)
 	public ProjectDto retrieveProject(@PathVariable int id) {
 		return projectService.findById(id);
@@ -72,13 +65,11 @@ public class ProjectController {
 		}
 		return new ResponseEntity<Project>(project, HttpStatus.OK);
 	}
-
+	
 	@PreAuthorize("hasAuthority('manager')")
-	@RequestMapping(path = "/projects", method = RequestMethod.POST)
-	public void createProject(@RequestBody Project project) {
-		projectService.save(project);
-		// Uri
-		// uri=ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(project.getId()).toUri();
-		// return ResponseEntity.created(uri).build();
+	@RequestMapping(path = "/projects/searchByTitle/{name}", method = RequestMethod.GET)
+	public List<ProjectDto> searchProjectByName(@PathVariable String name) {
+		return projectService.searchByName(name);
 	}
+
 }

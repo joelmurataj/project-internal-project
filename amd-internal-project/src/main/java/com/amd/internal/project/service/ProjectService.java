@@ -8,8 +8,9 @@ import com.amd.internal.project.entity.Project;
 public interface ProjectService {
 
 	public ProjectDto findById(int projectId);
-	public List<Project> findAll();
+	public List<ProjectDto> findAll();
 	public void save(Project project);
-	public Project deleteProject(int projectId);
-	public Project updateProject(Project project);
+	public ProjectDto deleteProject(int projectId);
+	public ProjectDto updateProject(Project project);
+	public List<ProjectDto> searchByName(String name);
 }

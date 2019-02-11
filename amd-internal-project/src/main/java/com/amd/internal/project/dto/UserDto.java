@@ -180,5 +180,13 @@ public class UserDto implements UserDetails {
 	public void setFlag(boolean flag) {
 		this.flag = flag;
 	}
+
+	@Override
+	public String toString() {
+		return "UserDto [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", email=" + email
+				+ ", password=" + password + ", departamentId=" + departamentId + ", projectId=" + projectId
+				+ ", superiorId=" + superiorId + ", roleId=" + roleId + ", pricePerHour=" + pricePerHour + ", roleName="
+				+ roleName + ", flag=" + flag + ", startDate=" + startDate + ", authorities=" + authorities + "]";
+	}
 	
 }

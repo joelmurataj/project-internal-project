@@ -57,8 +57,8 @@ public class User implements Serializable{
 	@JoinColumn(name = "superior_id", nullable = false)
 	private User superior;
 	
-	@Column(name = "flag", nullable = false)
-	private boolean flag;
+	@Column(name = "is_activated", nullable = false)
+	private boolean isActivated;
 	
 	@ManyToOne
 	@JoinColumn(name = "role_id", nullable = false)
@@ -121,11 +121,12 @@ public class User implements Serializable{
 	public void setSuperior(User superior) {
 		this.superior = superior;
 	}
-	public boolean isFlag() {
-		return flag;
+	
+	public boolean isActivated() {
+		return isActivated;
 	}
-	public void setFlag(boolean flag) {
-		this.flag = flag;
+	public void setActivated(boolean isActivated) {
+		this.isActivated = isActivated;
 	}
 	public Role getRole() {
 		return role;
