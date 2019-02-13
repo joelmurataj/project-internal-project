@@ -2,13 +2,16 @@ package com.amd.internal.project.dto;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.amd.internal.project.entity.Project;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 public class UserDto implements UserDetails {
 
@@ -28,13 +31,15 @@ public class UserDto implements UserDetails {
 	private boolean flag;
 	private Date startDate;
 	private List<SimpleGrantedAuthority> authorities;
+	private Set<Project> projects = new HashSet<Project>();
+	private Date startDateInProject;
+	private Date finishedDateInProject;
 	
 	public UserDto() {
 		List<SimpleGrantedAuthority> authorities = new ArrayList<SimpleGrantedAuthority>();
 		this.authorities = authorities;
 	}
 
-	@JsonIgnore
 	public Integer getId() {
 		return id;
 	}
@@ -58,9 +63,8 @@ public class UserDto implements UserDetails {
 	public int getProjectId() {
 		return projectId;
 	}
-
-	//@JsonIgnore
-	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+	@JsonBackReference
+	@JsonIgnore
 	public int getSuperiorId() {
 		return superiorId;
 	}
@@ -109,7 +113,6 @@ public class UserDto implements UserDetails {
 
 	@Override
 	public String getUsername() {
-		// TODO Auto-generated method stub
 		return this.email;
 	}
 	
@@ -179,6 +182,35 @@ public class UserDto implements UserDetails {
 
 	public void setFlag(boolean flag) {
 		this.flag = flag;
+	}
+	
+	@JsonBackReference
+	public Set<Project> getProjects() {
+		return projects;
+	}
+
+	public void setProjects(Set<Project> projects) {
+		this.projects = projects;
+	}
+	
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+	
+	public Date getStartDateInProject() {
+		return startDateInProject;
+	}
+
+	public void setStartDateInProject(Date startDateInProject) {
+		this.startDateInProject = startDateInProject;
+	}
+
+	public Date getFinishedDateInProject() {
+		return finishedDateInProject;
+	}
+
+	public void setFinishedDateInProject(Date finishedDateInProject) {
+		this.finishedDateInProject = finishedDateInProject;
 	}
 
 	@Override

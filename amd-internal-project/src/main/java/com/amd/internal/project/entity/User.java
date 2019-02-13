@@ -2,6 +2,8 @@ package com.amd.internal.project.entity;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,20 +12,26 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @Entity
 @Table(name="user")
 public class User implements Serializable{
 
+	
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
-	
+	private static final long serialVersionUID = -1977054170068745321L;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id", nullable = false, length = 11)
@@ -45,9 +53,9 @@ public class User implements Serializable{
 	@JoinColumn(name = "departament_id", nullable = false)
 	private Departament departament;
 	
-	@ManyToOne
-	@JoinColumn(name = "project_id", nullable = false)
-	private Project project;
+//	@ManyToOne
+//	@JoinColumn(name = "project_id1", nullable = false)
+//	private Project project;
 	
 	@Temporal(TemporalType.DATE)
 	@Column(name = "start_date")
@@ -66,6 +74,13 @@ public class User implements Serializable{
 	
 	@Column(name = "price_per_hour", nullable = false, length = 4)
 	private int pricePerHour;
+	
+	@ManyToMany(fetch= FetchType.LAZY)
+	@JoinTable(
+			name= "project_employee",
+			joinColumns=@JoinColumn(name="user_id"),
+			inverseJoinColumns=@JoinColumn(name="project_id"))
+	private Set<Project> projects = new HashSet<Project>();
 	
 	public int getId() {
 		return id;
@@ -103,11 +118,11 @@ public class User implements Serializable{
 	public void setDepartament(Departament departament) {
 		this.departament = departament;
 	}
-	public Project getProject() {
-		return project;
+	public Set<Project> getProjects() {
+		return projects;
 	}
-	public void setProject(Project project) {
-		this.project = project;
+	public void setProjects(Set<Project> projects) {
+		this.projects = projects;
 	}
 	public Date getStartDate() {
 		return startDate;
@@ -115,6 +130,7 @@ public class User implements Serializable{
 	public void setStartDate(Date startDate) {
 		this.startDate = startDate;
 	}
+	//@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 	public User getSuperior() {
 		return superior;
 	}
@@ -139,6 +155,15 @@ public class User implements Serializable{
 	}
 	public void setPricePerHour(int pricePerHour) {
 		this.pricePerHour = pricePerHour;
+	}
+//	public Project getProject() {
+//		return project;
+//	}
+//	public void setProject(Project project) {
+//		this.project = project;
+//	}
+	public static long getSerialversionuid() {
+		return serialVersionUID;
 	}
 	
 }

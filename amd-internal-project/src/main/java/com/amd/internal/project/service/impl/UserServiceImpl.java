@@ -1,6 +1,10 @@
 package com.amd.internal.project.service.impl;
 
+
 import java.util.List;
+import java.util.Set;
+
+import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -27,6 +31,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 	}
 
 	@Override
+	@Transactional
 	public UserDto loadUserByUsername(String username) throws UsernameNotFoundException {
 		UserDto userDto = UserConverter.toJwtUser(userDao.findByEmail(username));
 		if (userDto == null) {
@@ -36,21 +41,22 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 		return userDto;
 	}
 
-	@Override
-	public List<UserDto> findByProjectId(int id) {
-		return UserConverter.toUserListDto(userDao.findByProjectId(id));
-	}
+//	@Override
+//	public List<UserDto> findByProjectId(int id) {
+//		Project project = projectd
+//		return UserConverter.toUserListDto(userDao.findByProjectId(id));
+//	}
 
 	@Override
-	public List<UserDto> findByRole() {
+	public Set<UserDto> findByRole() {
 		Role role = new Role();
 		role.setId(2);
-		Project project = new Project();
-		project = null;
-		return UserConverter.toUserListDto(userDao.findByRoleAndProject(role, project));
+		Set<Project> projects =null;
+		return UserConverter.toUserSetDto(userDao.findByRoleAndProjects(role, projects));
 	}
 
 	@Override
+	@Transactional
 	public UserDto updateUser(Integer projectId, String email) {
 		User user = userDao.findByEmail(email);
 		Project project = new Project();
@@ -60,7 +66,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 		else {
 			project=null;
 		}
-		user.setProject(project);
+		//user.setProject(project);
 		userDao.saveAndFlush(user);
 		return UserConverter.toUserDto(user);
 	}

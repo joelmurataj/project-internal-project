@@ -16,14 +16,18 @@ public class ProjectConverter {
 			projectDto.setPricePerMonth(project.getPricePerMonth());
 			projectDto.setProjectDetail(project.getProjectDetail());
 			projectDto.setStartDate(project.getStartDate());
+			projectDto.setFinishedDate(project.getFinishedDate());
 			projectDto.setFlag(project.isFlag());
+			if (!project.getEmployees().isEmpty()) {
+				projectDto.setEmployees(project.getEmployees());
+			}
 			return projectDto;
 		} else {
 			return null;
 		}
 
 	}
-	
+
 	public static List<ProjectDto> toProjectListDto(List<Project> list) {
 		ArrayList<ProjectDto> projectDto = new ArrayList<>();
 		if (list != null) {

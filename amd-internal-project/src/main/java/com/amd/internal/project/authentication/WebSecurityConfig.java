@@ -85,7 +85,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .ignoring()
             .antMatchers(
                 HttpMethod.GET,
-                "/" //Other Stuff You want to Ignore
+                "/" 
             );
            // .and()
             //.ignoring()

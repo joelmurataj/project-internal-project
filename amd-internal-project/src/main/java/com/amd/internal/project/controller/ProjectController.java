@@ -1,6 +1,7 @@
 package com.amd.internal.project.controller;
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,7 +15,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.amd.internal.project.dto.ProjectDto;
+import com.amd.internal.project.dto.UserDto;
 import com.amd.internal.project.entity.Project;
+import com.amd.internal.project.entity.User;
 import com.amd.internal.project.service.ProjectService;
 
 @RestController
@@ -58,7 +61,7 @@ public class ProjectController {
 	@RequestMapping(path = "/projects/{id}", method = RequestMethod.PUT)
 	public ResponseEntity<Project> updateProject(@PathVariable int id, @RequestBody Project project) {
 		if (id != 0) {
-			projectService.updateProject(project);
+			projectService.updateProject(project, id);
 		} else {
 			project.setFlag(true);
 			projectService.save(project);
@@ -71,5 +74,12 @@ public class ProjectController {
 	public List<ProjectDto> searchProjectByName(@PathVariable String name) {
 		return projectService.searchByName(name);
 	}
+	
+	@PreAuthorize("hasAuthority('manager')")
+	@RequestMapping(path = "projectInfo/{id}", method = RequestMethod.GET)
+    public Set<UserDto> getEmployeesOfProject(@PathVariable int id) {
+		
+    	return projectService.getEmployeesOfProject(id);
+    }
 
 }

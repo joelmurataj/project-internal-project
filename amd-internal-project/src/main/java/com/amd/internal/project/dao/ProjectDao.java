@@ -13,7 +13,7 @@ import com.amd.internal.project.entity.Project;
 @Repository
 public interface ProjectDao extends JpaRepository<Project, Integer>{
 
-	public List<Project> findByFlag(boolean isActivated, Sort sort);
+	public List<Project> findByFlag(boolean flag, Sort sort);
 
 	public ProjectDto findByName(String name);
 	

@@ -1,6 +1,7 @@
 package com.amd.internal.project.dao;
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -10,6 +11,6 @@ import com.amd.internal.project.entity.User;
 
 public interface UserDao extends JpaRepository<User, Integer>{
 	public User findByEmail(String email);
-	public List<User> findByProjectId(int id);
-	public List<User> findByRoleAndProject(Role role, Project project);
+//	public List<User> findByProjectId(int id);
+	public Set<User> findByRoleAndProjects(Role role, Set<Project> projects);
 }

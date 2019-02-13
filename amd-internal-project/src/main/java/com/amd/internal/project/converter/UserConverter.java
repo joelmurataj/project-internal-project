@@ -1,7 +1,9 @@
 package com.amd.internal.project.converter;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
@@ -27,15 +29,15 @@ public class UserConverter {
 			userDto.setRoleId(user.getRole().getId());
 			userDto.setRoleName(user.getRole().getName());
 			userDto.setStartDate(user.getStartDate());
-			String manager = user.getRole().getName();
+			String role = user.getRole().getName();
 			// authorities.add(new SimpleGrantedAuthority(manager));
-			userDto.getAuthorities().add(new SimpleGrantedAuthority(manager));
+			userDto.getAuthorities().add(new SimpleGrantedAuthority(role));
 			// userDto.setAuthorities(authorities);
 			// userDto.setAuthorities(authorities);
 			// System.out.println(userDto.getAuthorities().get(0));
-			if (user.getProject() != null) {
-				userDto.setProjectId(user.getProject().getId());
-			}
+//			if (user.getProject() != null) {
+//				userDto.setProjectId(user.getProject().getId());
+//			}
 			if (user.getSuperior() != null) {
 				userDto.setSuperiorId(user.getSuperior().getId());
 			}
@@ -62,9 +64,12 @@ public class UserConverter {
 			userDto.setStartDate(user.getStartDate());
 			userDto.setDepartamentId(user.getDepartament().getId());
 			userDto.setPricePerHour(user.getPricePerHour());
-			if (user.getProject() != null) {
-				userDto.setProjectId(user.getProject().getId());
+			if (!user.getProjects().isEmpty()) {
+				userDto.setProjects(user.getProjects());
 			}
+//			if (user.getProject() != null) {
+//				userDto.setProjectId(user.getProject().getId());
+//			}
 			if (user.getSuperior() != null) {
 				userDto.setSuperiorId(user.getSuperior().getId());
 			}
@@ -74,9 +79,21 @@ public class UserConverter {
 		}
 
 	}
+
+	public static Set<UserDto> toUserSetDto(Set<User> list) {
+		Set<UserDto> userDto = new HashSet<UserDto>();
+		if (list != null) {
+			for (User user : list) {
+				userDto.add(toUserDto(user));
+			}
+			return userDto;
+		} else {
+			return userDto;
+		}
+	}
 	
-	public static List<UserDto> toUserListDto(List<User> list) {
-		ArrayList<UserDto> userDto = new ArrayList<>();
+	public static List<UserDto> toUserListDto(Set<User> list){
+		ArrayList<UserDto> userDto = new ArrayList<UserDto>();
 		if (list != null) {
 			for (User user : list) {
 				userDto.add(toUserDto(user));

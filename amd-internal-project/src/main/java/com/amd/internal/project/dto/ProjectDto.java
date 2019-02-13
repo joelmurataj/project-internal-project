@@ -2,6 +2,11 @@ package com.amd.internal.project.dto;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
+
+import com.amd.internal.project.entity.User;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 public class ProjectDto implements Serializable {
 
@@ -14,8 +19,10 @@ public class ProjectDto implements Serializable {
 	private String name;
 	private int pricePerMonth;
 	private Date startDate;
+	private Date finishedDate;
 	private boolean flag;
 	private String projectDetail;
+	private Set<User> employees = new HashSet<User>();
 	
 	public int getId() {
 		return id;
@@ -52,6 +59,19 @@ public class ProjectDto implements Serializable {
 	}
 	public void setProjectDetail(String projectDetail) {
 		this.projectDetail = projectDetail;
+	}
+	public Date getFinishedDate() {
+		return finishedDate;
+	}
+	public void setFinishedDate(Date finishedDate) {
+		this.finishedDate = finishedDate;
+	}
+	@JsonBackReference
+	public Set<User> getEmployees() {
+		return employees;
+	}
+	public void setEmployees(Set<User> employees) {
+		this.employees = employees;
 	}
 	
 }

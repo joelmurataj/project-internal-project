@@ -2,12 +2,18 @@ package com.amd.internal.project.entity;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -36,11 +42,22 @@ public class Project implements Serializable{
 	@Column(name = "start_date")
 	private Date startDate;
 	
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "finished_date")
+	private Date finishedDate;
+	
 	@Column(name = "flag", nullable = false)
 	private boolean flag;
 	
 	@Column(name = "project_detail", nullable = false, length = 500)
 	private String projectDetail;
+	
+	@ManyToMany//(fetch= FetchType.LAZY)
+	@JoinTable(
+			name= "project_employee",
+			joinColumns=@JoinColumn(name="project_id"),
+			inverseJoinColumns=@JoinColumn(name="user_id"))
+	private Set<User> employees = new HashSet<User>();
 	
 	public int getId() {
 		return id;
@@ -77,6 +94,18 @@ public class Project implements Serializable{
 	}
 	public void setName(String name) {
 		this.name = name;
+	}
+	public Date getFinishedDate() {
+		return finishedDate;
+	}
+	public void setFinishedDate(Date finishedDate) {
+		this.finishedDate = finishedDate;
+	}
+	public Set<User> getEmployees() {
+		return employees;
+	}
+	public void setEmployees(Set<User> employees) {
+		this.employees = employees;
 	}
 	
 }
