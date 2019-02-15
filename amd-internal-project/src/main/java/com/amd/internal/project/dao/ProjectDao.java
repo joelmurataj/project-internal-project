@@ -8,14 +8,15 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import com.amd.internal.project.dto.ProjectDto;
+import com.amd.internal.project.entity.Departament;
 import com.amd.internal.project.entity.Project;
 
 @Repository
 public interface ProjectDao extends JpaRepository<Project, Integer>{
 
-	public List<Project> findByFlag(boolean flag, Sort sort);
+	public List<Project> findByFlagAndDepartament(boolean flag, Departament departament,Sort sort);
 
-	public ProjectDto findByName(String name);
+	public Project findByName(String name);
 	
 	@Query("Select project from Project project where project.name like :name% and project.flag=1")
 	public List<Project> searchByName(String name);

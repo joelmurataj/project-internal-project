@@ -23,6 +23,7 @@ public class UserDto implements UserDetails {
 	private String email;
 	private String password;
 	private int departamentId;
+	private String departamentName;
 	private int projectId;
 	private int superiorId;
 	private int roleId;
@@ -211,6 +212,14 @@ public class UserDto implements UserDetails {
 
 	public void setFinishedDateInProject(Date finishedDateInProject) {
 		this.finishedDateInProject = finishedDateInProject;
+	}
+
+	public String getDepartamentName() {
+		return departamentName;
+	}
+
+	public void setDepartamentName(String departamentName) {
+		this.departamentName = departamentName;
 	}
 
 	@Override

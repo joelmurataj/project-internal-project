@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.amd.internal.project.dto.ProjectDto;
+import com.amd.internal.project.entity.Departament;
 import com.amd.internal.project.entity.Project;
 
 public class ProjectConverter {
@@ -18,6 +19,10 @@ public class ProjectConverter {
 			projectDto.setStartDate(project.getStartDate());
 			projectDto.setFinishedDate(project.getFinishedDate());
 			projectDto.setFlag(project.isFlag());
+			projectDto.setDepartamentId(project.getDepartament().getId());
+			projectDto.setDepartamentName(project.getDepartament().getName());
+			projectDto.setVacancy(project.getVacancy());
+			projectDto.setMaxOfEmployee(project.getMaxOfEmployee());
 			if (!project.getEmployees().isEmpty()) {
 				projectDto.setEmployees(project.getEmployees());
 			}
@@ -26,6 +31,54 @@ public class ProjectConverter {
 			return null;
 		}
 
+	}
+	
+//	public static Project toEditProjectdto(ProjectDto projectDto) {
+//		if (projectDto != null) {
+//			Project project = new Project();
+//			project.setId(projectDto.getId());
+//			project.setName(projectDto.getName());
+//			project.setPricePerMonth(projectDto.getPricePerMonth());
+//			project.setProjectDetail(projectDto.getProjectDetail());
+//			project.setStartDate(projectDto.getStartDate());
+//			project.setFinishedDate(projectDto.getFinishedDate());
+//			project.setFlag(projectDto.isFlag());
+//			Departament departament = new Departament();
+//			departament.setId(projectDto.getDepartamentId());
+//			project.setDepartament(departament);
+//			project.setVacancy(projectDto.getVacancy());
+//			project.setMaxOfEmployee(projectDto.getMaxOfEmployee());
+//			if (!projectDto.getEmployees().isEmpty()) {
+//				project.setEmployees(projectDto.getEmployees());
+//			}
+//			return project;
+//		} else {
+//			return null;
+//		}
+//	}
+	
+	public static Project toProject(ProjectDto projectDto) {
+		if (projectDto != null) {
+			Project project = new Project();
+			project.setId(projectDto.getId());
+			project.setName(projectDto.getName());
+			project.setPricePerMonth(projectDto.getPricePerMonth());
+			project.setProjectDetail(projectDto.getProjectDetail());
+			project.setStartDate(projectDto.getStartDate());
+			project.setFinishedDate(projectDto.getFinishedDate());
+			project.setFlag(projectDto.isFlag());
+			Departament departament = new Departament();
+			departament.setId(projectDto.getDepartamentId());
+			project.setDepartament(departament);
+			project.setVacancy(projectDto.getVacancy());
+			project.setMaxOfEmployee(projectDto.getMaxOfEmployee());
+			if (!projectDto.getEmployees().isEmpty()) {
+				project.setEmployees(projectDto.getEmployees());
+			}
+			return project;
+		} else {
+			return null;
+		}
 	}
 
 	public static List<ProjectDto> toProjectListDto(List<Project> list) {

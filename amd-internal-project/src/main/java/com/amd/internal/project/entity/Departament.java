@@ -26,8 +26,8 @@ public class Departament implements Serializable{
 	@Column(name = "name", nullable = false, length = 45)
 	private String name;
 	
-	@Column(name = "flag", nullable = false)
-	private boolean flag;
+	@Column(name = "is_activated", nullable = false)
+	private boolean activated;
 	
 	public int getId() {
 		return id;
@@ -41,11 +41,11 @@ public class Departament implements Serializable{
 	public void setName(String name) {
 		this.name = name;
 	}
-	public boolean isFlag() {
-		return flag;
+	public boolean isActivated() {
+		return activated;
 	}
-	public void setFlag(boolean flag) {
-		this.flag = flag;
+	public void setActivated(boolean activated) {
+		this.activated = activated;
 	}
 	
 }

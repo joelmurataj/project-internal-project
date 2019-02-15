@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,7 +31,8 @@ public class UserController {
 	
 	@RequestMapping(path = "/{email}", method = RequestMethod.GET)
     public UserDto getProject(@PathVariable String email) {
-    	return userService.findByEmail(email);
+		UserDto userDto = (UserDto) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    	return userDto;
     }
 	
 //	@RequestMapping(path = "projectInfo/{id}", method = RequestMethod.GET)

@@ -14,6 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -38,21 +39,31 @@ public class Project implements Serializable{
 	@Column(name = "price_per_month", nullable = false, length = 4)
 	private int pricePerMonth;
 	
-	@Temporal(TemporalType.TIMESTAMP)
+	@Temporal(TemporalType.DATE)
 	@Column(name = "start_date")
 	private Date startDate;
 	
-	@Temporal(TemporalType.TIMESTAMP)
+	@Temporal(TemporalType.DATE)
 	@Column(name = "finished_date")
 	private Date finishedDate;
 	
-	@Column(name = "flag", nullable = false)
+	@Column(name = "max_of_employee", nullable = false)
+	private int maxOfEmployee;
+	
+	@Column(name = "vacancy", nullable = false, length = 3)
+	private int vacancy;
+	
+	@Column(name = "flag", nullable = false , length = 3)
 	private boolean flag;
 	
 	@Column(name = "project_detail", nullable = false, length = 500)
 	private String projectDetail;
 	
-	@ManyToMany//(fetch= FetchType.LAZY)
+	@ManyToOne
+	@JoinColumn(name = "departament_id", nullable = false)
+	private Departament departament;
+	
+	@ManyToMany(fetch= FetchType.LAZY)
 	@JoinTable(
 			name= "project_employee",
 			joinColumns=@JoinColumn(name="project_id"),
@@ -106,6 +117,24 @@ public class Project implements Serializable{
 	}
 	public void setEmployees(Set<User> employees) {
 		this.employees = employees;
+	}
+	public Departament getDepartament() {
+		return departament;
+	}
+	public void setDepartament(Departament departament) {
+		this.departament = departament;
+	}
+	public int getMaxOfEmployee() {
+		return maxOfEmployee;
+	}
+	public void setMaxOfEmployee(int maxOfEmployee) {
+		this.maxOfEmployee = maxOfEmployee;
+	}
+	public int getVacancy() {
+		return vacancy;
+	}
+	public void setVacancy(int vacancy) {
+		this.vacancy = vacancy;
 	}
 	
 }

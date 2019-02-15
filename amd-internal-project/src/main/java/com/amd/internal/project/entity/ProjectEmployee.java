@@ -13,6 +13,8 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 @Entity
 @Table(name="project_employee")
 public class ProjectEmployee implements Serializable{
@@ -32,11 +34,11 @@ public class ProjectEmployee implements Serializable{
 	@JoinColumn(name = "user_id", nullable = false)
 	private User user;
 	
-	@Temporal(TemporalType.TIMESTAMP)
+	@Temporal(TemporalType.DATE)
 	@Column(name = "start_date_employee")
 	private Date startDateEmployee;
 	
-	@Temporal(TemporalType.TIMESTAMP)
+	@Temporal(TemporalType.DATE)
 	@Column(name = "finished_date_employee")
 	private Date finishedDateEmployee;
 	

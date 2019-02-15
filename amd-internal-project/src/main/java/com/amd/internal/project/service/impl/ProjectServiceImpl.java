@@ -7,6 +7,7 @@ import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,13 +16,11 @@ import com.amd.internal.project.converter.UserConverter;
 import com.amd.internal.project.dao.ProjectDao;
 import com.amd.internal.project.dao.ProjectEmployeeDao;
 import com.amd.internal.project.dto.ProjectDto;
-import com.amd.internal.project.dto.ProjectEmployeeDto;
 import com.amd.internal.project.dto.UserDto;
+import com.amd.internal.project.entity.Departament;
 import com.amd.internal.project.entity.Project;
 import com.amd.internal.project.entity.ProjectEmployee;
-import com.amd.internal.project.entity.User;
 import com.amd.internal.project.service.ProjectService;
-import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Service
 public class ProjectServiceImpl implements ProjectService {
@@ -46,16 +45,23 @@ public class ProjectServiceImpl implements ProjectService {
 	@Override
 	@Transactional
 	public List<ProjectDto> findAll() {
+		UserDto userDto=(UserDto) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		Departament departament= new Departament();
+		departament.setId(userDto.getDepartamentId());
 		return ProjectConverter
-				.toProjectListDto(projectdao.findByFlag(true, new Sort(Sort.Direction.DESC, "startDate")));
+				.toProjectListDto(projectdao.findByFlagAndDepartament(true, departament,new Sort(Sort.Direction.DESC, "startDate")));
 	}
 
 	@Override
 	@Transactional
-	public void save(Project project) {
-		ProjectDto projectDto = projectdao.findByName(project.getName());
-		if (projectDto == null) {
-			projectdao.save(project);
+	public void save(ProjectDto projectDto) {
+		Project project = projectdao.findByName(projectDto.getName());
+		if (project == null) {
+			projectDto.setFlag(true);
+			UserDto userLoggedIn = (UserDto) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			projectDto.setDepartamentId(userLoggedIn.getDepartamentId());
+			projectDto.setVacancy(projectDto.getMaxOfEmployee());
+			projectdao.save(ProjectConverter.toProject(projectDto));
 		}
 	}
 
@@ -65,25 +71,29 @@ public class ProjectServiceImpl implements ProjectService {
 		Project project = projectdao.findById(projectId).get();
 		if(getEmployeesOfProject(projectId).isEmpty()){
 			project.setFlag(false);
+			return ProjectConverter.toProjectDto(project);
+		}
+		else {
+			return null;
 		}
 		
-		return ProjectConverter.toProjectDto(project);
 	}
 
 	@Override
 	@Transactional
-	public ProjectDto updateProject(Project project, int projectId) {
-		if (projectEmployeedao.projectConflictDateWithEmployee(project.getStartDate(), project.getFinishedDate())
+	public ProjectDto updateProject(ProjectDto projectDto, int projectId) {
+		if (projectEmployeedao.projectConflictDateWithEmployee(projectId, projectDto.getStartDate(), projectDto.getFinishedDate())
 				.isEmpty()) {
-			System.out.println("u updetua");
-			Project project1 = projectdao.findById(projectId).get();
-			project1.setProjectDetail(project.getProjectDetail());
-			project1.setFinishedDate(project.getFinishedDate());
-			project1.setStartDate(project.getStartDate());
-		}else {
-			System.out.println("ka konflikte");
+			Project project = projectdao.findById(projectId).get();
+			project.setProjectDetail(projectDto.getProjectDetail());
+			project.setStartDate(projectDto.getStartDate());
+			project.setFinishedDate(projectDto.getFinishedDate());
+			int vacancyAddded = projectDto.getMaxOfEmployee() -project.getMaxOfEmployee();
+			project.setVacancy(project.getVacancy()+vacancyAddded);
+			project.setMaxOfEmployee(projectDto.getMaxOfEmployee());
+			return ProjectConverter.toProjectDto(project);
 		}
-		return ProjectConverter.toProjectDto(project);
+		return null;
 	}
 
 	@Override

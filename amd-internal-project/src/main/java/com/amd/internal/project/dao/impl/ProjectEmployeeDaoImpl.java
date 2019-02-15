@@ -52,23 +52,51 @@ public class ProjectEmployeeDaoImpl implements ProjectEmployeeDao {
 			e.printStackTrace();
 		}
 	}
-	
+
 	@Override
 	@Transactional
-	public ArrayList<ProjectEmployee> projectConflictDateWithEmployee(Date startDate, Date finishedDate) {
+	public ArrayList<ProjectEmployee> projectConflictDateWithEmployee(int projectId, Date startDate,
+			Date finishedDate) {
 		ArrayList<ProjectEmployee> listOfProjectEmployee = null;
 		try {
-			listOfProjectEmployee = (ArrayList<ProjectEmployee>) entityManager.createQuery(
-					"select projectEmployee "
+			listOfProjectEmployee = (ArrayList<ProjectEmployee>) entityManager.createQuery("select projectEmployee "
 					+ "from ProjectEmployee projectEmployee "
-					+ "where (projectEmployee.startDateEmployee <: startDate or projectEmployee.startDateEmployee >: finishedDate "
-					+ "or projectEmployee.finishedDateEmployee <: startDate or projectEmployee.finishedDateEmployee >: finishedDate) and projectEmployee.activated =1",
-					ProjectEmployee.class).setParameter("startDate", startDate).setParameter("finishedDate", finishedDate)
-					.getResultList();
+					+ "where (projectEmployee.startDateEmployee <=: startDate or projectEmployee.startDateEmployee >=: finishedDate "
+					+ "or projectEmployee.finishedDateEmployee <=: startDate or projectEmployee.finishedDateEmployee >=: finishedDate) and projectEmployee.project.id =: projectId and projectEmployee.activated =1",
+					ProjectEmployee.class).setParameter("startDate", startDate)
+					.setParameter("finishedDate", finishedDate).setParameter("projectId", projectId).getResultList();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return listOfProjectEmployee;
 	}
-	
+
+	@Override
+	@Transactional
+	public void update(ProjectEmployee projectEmployee) {
+		try {
+			entityManager.merge(projectEmployee);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Override
+	@Transactional
+	public ArrayList<ProjectEmployee> filterByNameAndDates(String firstNameOfEmployee, Date startDate,
+			Date finishedDate) {
+		System.out.println(firstNameOfEmployee);
+		System.out.println(startDate);
+		System.out.println(finishedDate);
+		ArrayList<ProjectEmployee> projectEmployee = (ArrayList<ProjectEmployee>) entityManager.createQuery(
+					"from ProjectEmployee projectEmployee "
+					+ "where projectEmployee.startDateEmployee >= :startDate "
+					+ "and projectEmployee.finishedDateEmployee <= :finishedDate "
+					+ "and projectEmployee.user.firstName like :firstNameOfEmployee and projectEmployee.activated=1",
+					ProjectEmployee.class).setParameter("startDate", startDate)
+					.setParameter("finishedDate", finishedDate).setParameter("firstNameOfEmployee", firstNameOfEmployee +"%")
+					.getResultList();
+		return projectEmployee;
+	}
+
 }

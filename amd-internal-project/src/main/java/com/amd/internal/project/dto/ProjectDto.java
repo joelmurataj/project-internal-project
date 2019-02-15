@@ -22,6 +22,10 @@ public class ProjectDto implements Serializable {
 	private Date finishedDate;
 	private boolean flag;
 	private String projectDetail;
+	private int departamentId;
+	private String departamentName;
+	private int maxOfEmployee;
+	private int vacancy;
 	private Set<User> employees = new HashSet<User>();
 	
 	public int getId() {
@@ -72,6 +76,30 @@ public class ProjectDto implements Serializable {
 	}
 	public void setEmployees(Set<User> employees) {
 		this.employees = employees;
+	}
+	public int getDepartamentId() {
+		return departamentId;
+	}
+	public void setDepartamentId(int departamentId) {
+		this.departamentId = departamentId;
+	}
+	public String getDepartamentName() {
+		return departamentName;
+	}
+	public void setDepartamentName(String departamentName) {
+		this.departamentName = departamentName;
+	}
+	public int getMaxOfEmployee() {
+		return maxOfEmployee;
+	}
+	public void setMaxOfEmployee(int maxOfEmployee) {
+		this.maxOfEmployee = maxOfEmployee;
+	}
+	public int getVacancy() {
+		return vacancy;
+	}
+	public void setVacancy(int vacancy) {
+		this.vacancy = vacancy;
 	}
 	
 }

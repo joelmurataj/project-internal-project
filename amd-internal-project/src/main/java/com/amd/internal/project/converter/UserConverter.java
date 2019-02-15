@@ -14,12 +14,6 @@ public class UserConverter {
 
 	public static UserDto toJwtUser(User user) {
 		if (user != null) {
-//			if (user.getSuperior() != null) {
-			// List<SimpleGrantedAuthority> authorities = new
-			// ArrayList<SimpleGrantedAuthority>();
-//			JwtUserDetails userDto = new JwtUserDetails(user.getId(), user.getFirstName(), user.getLastName(),
-//					user.getEmail(), user.getPassword(), user.getDepartament().getId(), user.getProject().getId(),
-//				user.getSuperior().getId(), user.getRole().getId(), user.getPricePerHour());
 			UserDto userDto = new UserDto();
 			userDto.setId(user.getId());
 			userDto.setFirstName(user.getFirstName());
@@ -28,26 +22,18 @@ public class UserConverter {
 			userDto.setPassword(user.getPassword());
 			userDto.setRoleId(user.getRole().getId());
 			userDto.setRoleName(user.getRole().getName());
+			userDto.setDepartamentId(user.getDepartament().getId());
+			userDto.setDepartamentName(user.getDepartament().getName());
 			userDto.setStartDate(user.getStartDate());
 			String role = user.getRole().getName();
-			// authorities.add(new SimpleGrantedAuthority(manager));
 			userDto.getAuthorities().add(new SimpleGrantedAuthority(role));
-			// userDto.setAuthorities(authorities);
-			// userDto.setAuthorities(authorities);
-			// System.out.println(userDto.getAuthorities().get(0));
-//			if (user.getProject() != null) {
-//				userDto.setProjectId(user.getProject().getId());
-//			}
 			if (user.getSuperior() != null) {
 				userDto.setSuperiorId(user.getSuperior().getId());
 			}
-
 			return userDto;
 		} else {
 			return null;
 		}
-
-		// }
 	}
 
 	public static UserDto toUserDto(User user) {
@@ -63,13 +49,11 @@ public class UserConverter {
 			userDto.setRoleName(user.getRole().getName());
 			userDto.setStartDate(user.getStartDate());
 			userDto.setDepartamentId(user.getDepartament().getId());
+			userDto.setDepartamentName(user.getDepartament().getName());
 			userDto.setPricePerHour(user.getPricePerHour());
 			if (!user.getProjects().isEmpty()) {
 				userDto.setProjects(user.getProjects());
 			}
-//			if (user.getProject() != null) {
-//				userDto.setProjectId(user.getProject().getId());
-//			}
 			if (user.getSuperior() != null) {
 				userDto.setSuperiorId(user.getSuperior().getId());
 			}

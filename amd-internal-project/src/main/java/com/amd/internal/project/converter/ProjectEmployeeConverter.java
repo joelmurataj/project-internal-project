@@ -47,7 +47,7 @@ public class ProjectEmployeeConverter {
 	}
 
 	public static List<ProjectEmployeeDto> toProjectEmployeeListDto(List<ProjectEmployee> list) {
-		ArrayList<ProjectEmployeeDto> projectDto = new ArrayList<>();
+		ArrayList<ProjectEmployeeDto> projectDto = new ArrayList<ProjectEmployeeDto>();
 		if (list != null) {
 			for (ProjectEmployee projectEmployee : list) {
 				projectDto.add(toProjectEmployeeDto(projectEmployee));

@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.amd.internal.project.dto.ProjectDto;
 import com.amd.internal.project.dto.UserDto;
 import com.amd.internal.project.entity.Project;
-import com.amd.internal.project.entity.User;
 import com.amd.internal.project.service.ProjectService;
 
 @RestController
@@ -36,13 +35,9 @@ public class ProjectController {
 
 	@PreAuthorize("hasAuthority('manager')")
 	@RequestMapping(path = "/projects/{id}", method = RequestMethod.GET)
-	public ResponseEntity<Void> deleteById(@PathVariable int id) {
+	public ResponseEntity<ProjectDto> deleteById(@PathVariable int id) {
 		ProjectDto project = projectService.deleteProject(id);
-		if (project != null) {
-			return ResponseEntity.noContent().build();
-		} else {
-			return ResponseEntity.notFound().build();
-		}
+		return new ResponseEntity<ProjectDto>(project, HttpStatus.OK);
 	}
 
 	@PreAuthorize("hasAuthority('manager')")
@@ -50,8 +45,8 @@ public class ProjectController {
 	public ProjectDto getProject(@PathVariable int id) {
 		return projectService.findById(id);
 	}
-	
-	//@PreAuthorize("hasAuthority('employee')")
+
+	// @PreAuthorize("hasAuthority('employee')")
 	@RequestMapping(path = "/project/{id}", method = RequestMethod.GET)
 	public ProjectDto retrieveProject(@PathVariable int id) {
 		return projectService.findById(id);
@@ -59,27 +54,26 @@ public class ProjectController {
 
 	@PreAuthorize("hasAuthority('manager')")
 	@RequestMapping(path = "/projects/{id}", method = RequestMethod.PUT)
-	public ResponseEntity<Project> updateProject(@PathVariable int id, @RequestBody Project project) {
+	public ResponseEntity<ProjectDto> updateProject(@PathVariable int id, @RequestBody ProjectDto project) {
 		if (id != 0) {
 			projectService.updateProject(project, id);
 		} else {
-			project.setFlag(true);
 			projectService.save(project);
 		}
-		return new ResponseEntity<Project>(project, HttpStatus.OK);
+		return new ResponseEntity<ProjectDto>(project, HttpStatus.OK);
 	}
-	
+
 	@PreAuthorize("hasAuthority('manager')")
 	@RequestMapping(path = "/projects/searchByTitle/{name}", method = RequestMethod.GET)
 	public List<ProjectDto> searchProjectByName(@PathVariable String name) {
 		return projectService.searchByName(name);
 	}
-	
+
 	@PreAuthorize("hasAuthority('manager')")
 	@RequestMapping(path = "projectInfo/{id}", method = RequestMethod.GET)
-    public Set<UserDto> getEmployeesOfProject(@PathVariable int id) {
-		
-    	return projectService.getEmployeesOfProject(id);
-    }
+	public Set<UserDto> getEmployeesOfProject(@PathVariable int id) {
+
+		return projectService.getEmployeesOfProject(id);
+	}
 
 }
