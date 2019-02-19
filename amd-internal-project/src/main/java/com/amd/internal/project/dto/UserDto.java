@@ -31,6 +31,8 @@ public class UserDto implements UserDetails {
 	private String roleName;
 	private boolean flag;
 	private Date startDate;
+	private int rankId;
+	private String rankName;
 	private List<SimpleGrantedAuthority> authorities;
 	private Set<Project> projects = new HashSet<Project>();
 	private Date startDateInProject;
@@ -220,6 +222,22 @@ public class UserDto implements UserDetails {
 
 	public void setDepartamentName(String departamentName) {
 		this.departamentName = departamentName;
+	}
+	
+	public int getRankId() {
+		return rankId;
+	}
+
+	public void setRankId(int rankId) {
+		this.rankId = rankId;
+	}
+
+	public String getRankName() {
+		return rankName;
+	}
+
+	public void setRankName(String rankName) {
+		this.rankName = rankName;
 	}
 
 	@Override

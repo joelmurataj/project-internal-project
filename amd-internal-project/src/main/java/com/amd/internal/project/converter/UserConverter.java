@@ -27,6 +27,8 @@ public class UserConverter {
 			userDto.setStartDate(user.getStartDate());
 			String role = user.getRole().getName();
 			userDto.getAuthorities().add(new SimpleGrantedAuthority(role));
+			userDto.setRankId(user.getRank().getIdRank());
+			userDto.setRankName(user.getRank().getName());
 			if (user.getSuperior() != null) {
 				userDto.setSuperiorId(user.getSuperior().getId());
 			}
@@ -51,6 +53,8 @@ public class UserConverter {
 			userDto.setDepartamentId(user.getDepartament().getId());
 			userDto.setDepartamentName(user.getDepartament().getName());
 			userDto.setPricePerHour(user.getPricePerHour());
+			userDto.setRankId(user.getRank().getIdRank());
+			userDto.setRankName(user.getRank().getName());
 			if (!user.getProjects().isEmpty()) {
 				userDto.setProjects(user.getProjects());
 			}

@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.amd.internal.project.dto.ProjectDto;
 import com.amd.internal.project.dto.UserDto;
-import com.amd.internal.project.entity.Project;
 import com.amd.internal.project.service.ProjectService;
 
 @RestController

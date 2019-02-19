@@ -61,10 +61,13 @@ public class ProjectEmployeeDaoImpl implements ProjectEmployeeDao {
 		try {
 			listOfProjectEmployee = (ArrayList<ProjectEmployee>) entityManager.createQuery("select projectEmployee "
 					+ "from ProjectEmployee projectEmployee "
-					+ "where (projectEmployee.startDateEmployee <=: startDate or projectEmployee.startDateEmployee >=: finishedDate "
-					+ "or projectEmployee.finishedDateEmployee <=: startDate or projectEmployee.finishedDateEmployee >=: finishedDate) and projectEmployee.project.id =: projectId and projectEmployee.activated =1",
+					+ "where (projectEmployee.startDateEmployee <: startDate or projectEmployee.startDateEmployee >: finishedDate "
+					+ "or projectEmployee.finishedDateEmployee <: startDate or projectEmployee.finishedDateEmployee >: finishedDate) and projectEmployee.project.id =: projectId and projectEmployee.activated =1",
 					ProjectEmployee.class).setParameter("startDate", startDate)
 					.setParameter("finishedDate", finishedDate).setParameter("projectId", projectId).getResultList();
+			for(ProjectEmployee pe : listOfProjectEmployee) {
+				System.out.println(pe.getUser().getId());
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

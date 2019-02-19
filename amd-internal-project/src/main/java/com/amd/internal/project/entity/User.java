@@ -19,9 +19,6 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 @Entity
 @Table(name="user")
 public class User implements Serializable{
@@ -53,9 +50,9 @@ public class User implements Serializable{
 	@JoinColumn(name = "departament_id", nullable = false)
 	private Departament departament;
 	
-//	@ManyToOne
-//	@JoinColumn(name = "project_id1", nullable = false)
-//	private Project project;
+	@ManyToOne
+	@JoinColumn(name = "rank_id", nullable = false)
+	private Rank rank;
 	
 	@Temporal(TemporalType.DATE)
 	@Column(name = "start_date")
@@ -156,14 +153,11 @@ public class User implements Serializable{
 	public void setPricePerHour(int pricePerHour) {
 		this.pricePerHour = pricePerHour;
 	}
-//	public Project getProject() {
-//		return project;
-//	}
-//	public void setProject(Project project) {
-//		this.project = project;
-//	}
-	public static long getSerialversionuid() {
-		return serialVersionUID;
+	public Rank getRank() {
+		return rank;
 	}
-	
+	public void setRank(Rank rank) {
+		this.rank = rank;
+	}
+
 }

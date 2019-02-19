@@ -18,6 +18,6 @@ public interface ProjectDao extends JpaRepository<Project, Integer>{
 
 	public Project findByName(String name);
 	
-	@Query("Select project from Project project where project.name like :name% and project.flag=1")
-	public List<Project> searchByName(String name);
+	@Query("Select project from Project project where project.name like :name% and project.flag=1 and project.departament= :departament")
+	public List<Project> searchByNameAndDepartament(String name, Departament departament);
 }

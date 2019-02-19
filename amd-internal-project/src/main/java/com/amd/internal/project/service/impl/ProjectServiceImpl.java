@@ -99,7 +99,10 @@ public class ProjectServiceImpl implements ProjectService {
 	@Override
 	@Transactional
 	public List<ProjectDto> searchByName(String name) {
-		List<Project> project = projectdao.searchByName(name);
+		UserDto userLogged=(UserDto) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		Departament departament = new Departament();
+		departament.setId(userLogged.getDepartamentId());
+		List<Project> project = projectdao.searchByNameAndDepartament(name, departament);
 		return ProjectConverter.toProjectListDto(project);
 	}
 

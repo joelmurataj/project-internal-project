@@ -90,11 +90,8 @@ public class ProjectEmployeeController {
 		Date date = null;
 		Date date1= null;
 		try {
-			System.out.println("po");
 			date = format.parse(startDate);
 			date1 = format.parse(finishedDate);
-			System.out.println(date);
-			System.out.println(date1);
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
