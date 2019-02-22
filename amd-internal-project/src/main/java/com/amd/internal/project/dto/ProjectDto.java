@@ -2,8 +2,7 @@ package com.amd.internal.project.dto;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 import com.amd.internal.project.entity.User;
 import com.fasterxml.jackson.annotation.JsonBackReference;
@@ -26,7 +25,12 @@ public class ProjectDto implements Serializable {
 	private String departamentName;
 	private int maxOfEmployee;
 	private int vacancy;
-	private Set<User> employees = new HashSet<User>();
+	private int statusId;
+	private String statusName;
+	private List<User> employees;
+	private int allocationOfTheEmployee;
+	private Date startDateOfEmployee;
+	private Date finishedDateOfEmployee;
 	
 	public int getId() {
 		return id;
@@ -71,15 +75,17 @@ public class ProjectDto implements Serializable {
 		this.finishedDate = finishedDate;
 	}
 	@JsonBackReference
-	public Set<User> getEmployees() {
+	public List<User> getEmployees() {
 		return employees;
 	}
-	public void setEmployees(Set<User> employees) {
+	public void setEmployees(List<User> employees) {
 		this.employees = employees;
 	}
+	
 	public int getDepartamentId() {
 		return departamentId;
 	}
+	
 	public void setDepartamentId(int departamentId) {
 		this.departamentId = departamentId;
 	}
@@ -100,6 +106,36 @@ public class ProjectDto implements Serializable {
 	}
 	public void setVacancy(int vacancy) {
 		this.vacancy = vacancy;
+	}
+	public int getStatusId() {
+		return statusId;
+	}
+	public void setStatusId(int statusId) {
+		this.statusId = statusId;
+	}
+	public String getStatusName() {
+		return statusName;
+	}
+	public void setStatusName(String statusName) {
+		this.statusName = statusName;
+	}
+	public int getAllocationOfTheEmployee() {
+		return allocationOfTheEmployee;
+	}
+	public void setAllocationOfTheEmployee(int allocationOfTheEmployee) {
+		this.allocationOfTheEmployee = allocationOfTheEmployee;
+	}
+	public Date getStartDateOfEmployee() {
+		return startDateOfEmployee;
+	}
+	public void setStartDateOfEmployee(Date startDateOfEmployee) {
+		this.startDateOfEmployee = startDateOfEmployee;
+	}
+	public Date getFinishedDateOfEmployee() {
+		return finishedDateOfEmployee;
+	}
+	public void setFinishedDateOfEmployee(Date finishedDateOfEmployee) {
+		this.finishedDateOfEmployee = finishedDateOfEmployee;
 	}
 	
 }

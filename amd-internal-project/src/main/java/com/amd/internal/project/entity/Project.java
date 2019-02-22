@@ -2,8 +2,7 @@ package com.amd.internal.project.entity;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -60,6 +59,10 @@ public class Project implements Serializable{
 	private String projectDetail;
 	
 	@ManyToOne
+	@JoinColumn(name = "status_id", nullable = false)
+	private Status status;
+	
+	@ManyToOne
 	@JoinColumn(name = "departament_id", nullable = false)
 	private Departament departament;
 	
@@ -68,7 +71,7 @@ public class Project implements Serializable{
 			name= "project_employee",
 			joinColumns=@JoinColumn(name="project_id"),
 			inverseJoinColumns=@JoinColumn(name="user_id"))
-	private Set<User> employees = new HashSet<User>();
+	private List<User> employees;
 	
 	public int getId() {
 		return id;
@@ -112,10 +115,11 @@ public class Project implements Serializable{
 	public void setFinishedDate(Date finishedDate) {
 		this.finishedDate = finishedDate;
 	}
-	public Set<User> getEmployees() {
+	
+	public List<User> getEmployees() {
 		return employees;
 	}
-	public void setEmployees(Set<User> employees) {
+	public void setEmployees(List<User> employees) {
 		this.employees = employees;
 	}
 	public Departament getDepartament() {
@@ -135,6 +139,12 @@ public class Project implements Serializable{
 	}
 	public void setVacancy(int vacancy) {
 		this.vacancy = vacancy;
+	}
+	public Status getStatus() {
+		return status;
+	}
+	public void setStatus(Status status) {
+		this.status = status;
 	}
 	
 }

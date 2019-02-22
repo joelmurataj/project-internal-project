@@ -40,6 +40,9 @@ public class ProjectEmployee implements Serializable{
 	@Column(name = "finished_date_employee")
 	private Date finishedDateEmployee;
 	
+	@Column(name = "allocation", nullable = false, length = 3)
+	private int allocation;
+	
 	@Column(name = "is_activated", nullable = false)
 	private boolean activated;
 
@@ -82,4 +85,13 @@ public class ProjectEmployee implements Serializable{
 	public void setActivated(boolean activated) {
 		this.activated = activated;
 	}
+
+	public int getAllocation() {
+		return allocation;
+	}
+
+	public void setAllocation(int allocation) {
+		this.allocation = allocation;
+	}
+	
 }

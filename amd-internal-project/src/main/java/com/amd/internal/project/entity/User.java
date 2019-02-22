@@ -2,8 +2,7 @@ package com.amd.internal.project.entity;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -77,7 +76,7 @@ public class User implements Serializable{
 			name= "project_employee",
 			joinColumns=@JoinColumn(name="user_id"),
 			inverseJoinColumns=@JoinColumn(name="project_id"))
-	private Set<Project> projects = new HashSet<Project>();
+	private List<Project> projects ;
 	
 	public int getId() {
 		return id;
@@ -115,12 +114,7 @@ public class User implements Serializable{
 	public void setDepartament(Departament departament) {
 		this.departament = departament;
 	}
-	public Set<Project> getProjects() {
-		return projects;
-	}
-	public void setProjects(Set<Project> projects) {
-		this.projects = projects;
-	}
+
 	public Date getStartDate() {
 		return startDate;
 	}
@@ -158,6 +152,12 @@ public class User implements Serializable{
 	}
 	public void setRank(Rank rank) {
 		this.rank = rank;
+	}
+	public List<Project> getProjects() {
+		return projects;
+	}
+	public void setProjects(List<Project> projects) {
+		this.projects = projects;
 	}
 
 }

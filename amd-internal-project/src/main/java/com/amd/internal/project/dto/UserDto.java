@@ -2,14 +2,13 @@ package com.amd.internal.project.dto;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.amd.internal.project.entity.Project;
+import com.amd.internal.project.entity.ProjectEmployee;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -34,9 +33,11 @@ public class UserDto implements UserDetails {
 	private int rankId;
 	private String rankName;
 	private List<SimpleGrantedAuthority> authorities;
-	private Set<Project> projects = new HashSet<Project>();
+	private List<Project> projects;
 	private Date startDateInProject;
 	private Date finishedDateInProject;
+	private int allocation;
+	private String currentProject;
 	
 	public UserDto() {
 		List<SimpleGrantedAuthority> authorities = new ArrayList<SimpleGrantedAuthority>();
@@ -98,7 +99,6 @@ public class UserDto implements UserDetails {
 		return true;
 	}
 
-	@JsonIgnore
 	@Override
 	public String getPassword() {
 		return password;
@@ -188,18 +188,14 @@ public class UserDto implements UserDetails {
 	}
 	
 	@JsonBackReference
-	public Set<Project> getProjects() {
+	public List<Project> getProjects() {
 		return projects;
 	}
 
-	public void setProjects(Set<Project> projects) {
+	public void setProjects(List<Project> projects) {
 		this.projects = projects;
 	}
-	
-	public static long getSerialversionuid() {
-		return serialVersionUID;
-	}
-	
+
 	public Date getStartDateInProject() {
 		return startDateInProject;
 	}
@@ -238,6 +234,21 @@ public class UserDto implements UserDetails {
 
 	public void setRankName(String rankName) {
 		this.rankName = rankName;
+	}
+
+	public int getAllocation() {
+		return allocation;
+	}
+
+	public void setAllocation(int allocation) {
+		this.allocation = allocation;
+	}
+	public String getCurrentProject() {
+		return currentProject;
+	}
+
+	public void setCurrentProject(String currentProject) {
+		this.currentProject = currentProject;
 	}
 
 	@Override

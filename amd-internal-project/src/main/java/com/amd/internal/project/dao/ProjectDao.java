@@ -7,7 +7,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import com.amd.internal.project.dto.ProjectDto;
 import com.amd.internal.project.entity.Departament;
 import com.amd.internal.project.entity.Project;
 

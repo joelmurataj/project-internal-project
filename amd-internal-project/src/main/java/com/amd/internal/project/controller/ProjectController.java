@@ -1,7 +1,6 @@
 package com.amd.internal.project.controller;
 
 import java.util.List;
-import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,8 +13,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.amd.internal.project.dao.StatusDao;
 import com.amd.internal.project.dto.ProjectDto;
 import com.amd.internal.project.dto.UserDto;
+import com.amd.internal.project.entity.Status;
 import com.amd.internal.project.service.ProjectService;
 
 @RestController
@@ -24,6 +25,9 @@ public class ProjectController {
 
 	@Autowired
 	private ProjectService projectService;
+
+	@Autowired
+	private StatusDao statusDao;
 
 	@PreAuthorize("hasAuthority('manager')")
 	@RequestMapping(path = "/projects", method = RequestMethod.GET)
@@ -54,12 +58,14 @@ public class ProjectController {
 	@PreAuthorize("hasAuthority('manager')")
 	@RequestMapping(path = "/projects/{id}", method = RequestMethod.PUT)
 	public ResponseEntity<ProjectDto> updateProject(@PathVariable int id, @RequestBody ProjectDto project) {
+		ProjectDto projectDto = null;
 		if (id != 0) {
-			projectService.updateProject(project, id);
+			projectDto = projectService.updateProject(project, id);
 		} else {
-			projectService.save(project);
+			project.setStatusId(2);
+			projectDto = projectService.save(project);
 		}
-		return new ResponseEntity<ProjectDto>(project, HttpStatus.OK);
+		return new ResponseEntity<ProjectDto>(projectDto, HttpStatus.OK);
 	}
 
 	@PreAuthorize("hasAuthority('manager')")
@@ -70,9 +76,15 @@ public class ProjectController {
 
 	@PreAuthorize("hasAuthority('manager')")
 	@RequestMapping(path = "projectInfo/{id}", method = RequestMethod.GET)
-	public Set<UserDto> getEmployeesOfProject(@PathVariable int id) {
+	public List<UserDto> getEmployeesOfProject(@PathVariable int id) {
 
 		return projectService.getEmployeesOfProject(id);
+	}
+
+	@RequestMapping(path = "/allStatus", method = RequestMethod.GET)
+	public List<Status> retrieveAllRanks() {
+
+		return statusDao.getEditableStatus();
 	}
 
 }

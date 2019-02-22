@@ -19,10 +19,9 @@ public class ProjectEmployeeConverter {
 			projectEmployeeDto.setProjectId(projectEmployee.getProject().getId());
 		}
 		projectEmployeeDto.setStartDateEmployee(projectEmployee.getStartDateEmployee());
-		if (projectEmployee.getFinishedDateEmployee() != null) {
-			projectEmployeeDto.setFinishedDateEmployee(projectEmployee.getFinishedDateEmployee());
-		}
+		projectEmployeeDto.setFinishedDateEmployee(projectEmployee.getFinishedDateEmployee());
 		projectEmployeeDto.setActivated(projectEmployee.isActivated());
+		projectEmployeeDto.setAllocation(projectEmployee.getAllocation());
 
 		return projectEmployeeDto;
 	}
@@ -34,6 +33,7 @@ public class ProjectEmployeeConverter {
 			projectemployee.setActivated(employeeProjectDto.isActivated());
 			projectemployee.setFinishedDateEmployee(employeeProjectDto.getFinishedDateEmployee());
 			projectemployee.setStartDateEmployee(employeeProjectDto.getStartDateEmployee());
+			projectemployee.setAllocation(employeeProjectDto.getAllocation());
 			User user = new User();
 			user.setId(employeeProjectDto.getUserId());
 			projectemployee.setUser(user);

@@ -6,6 +6,7 @@ import java.util.List;
 import com.amd.internal.project.dto.ProjectDto;
 import com.amd.internal.project.entity.Departament;
 import com.amd.internal.project.entity.Project;
+import com.amd.internal.project.entity.Status;
 
 public class ProjectConverter {
 
@@ -23,6 +24,8 @@ public class ProjectConverter {
 			projectDto.setDepartamentName(project.getDepartament().getName());
 			projectDto.setVacancy(project.getVacancy());
 			projectDto.setMaxOfEmployee(project.getMaxOfEmployee());
+			projectDto.setStatusId(project.getStatus().getId());
+			projectDto.setStatusName(project.getStatus().getName());
 			if (!project.getEmployees().isEmpty()) {
 				projectDto.setEmployees(project.getEmployees());
 			}
@@ -72,7 +75,10 @@ public class ProjectConverter {
 			project.setDepartament(departament);
 			project.setVacancy(projectDto.getVacancy());
 			project.setMaxOfEmployee(projectDto.getMaxOfEmployee());
-			if (!projectDto.getEmployees().isEmpty()) {
+			Status status = new Status();
+			status.setId(projectDto.getStatusId());
+			project.setStatus(status);
+			if (projectDto.getEmployees() !=null) {
 				project.setEmployees(projectDto.getEmployees());
 			}
 			return project;
