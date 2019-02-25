@@ -27,9 +27,9 @@ public class ProjectEmployeeController {
 	@PreAuthorize("hasAuthority('manager')")
 	@RequestMapping(path = "/projectEmployee", method = RequestMethod.PUT)
 	public ResponseEntity<ProjectEmployeeDto> updateProject(@RequestBody ProjectEmployeeDto projectEmployee) {
-		projectEmployeeService.save(projectEmployee);
+		ProjectEmployeeDto projectEmployeeDto=projectEmployeeService.save(projectEmployee);
 
-		return new ResponseEntity<ProjectEmployeeDto>(projectEmployee, HttpStatus.OK);
+		return new ResponseEntity<ProjectEmployeeDto>(projectEmployeeDto, HttpStatus.OK);
 	}
 
 	@PreAuthorize("hasAuthority('manager')")

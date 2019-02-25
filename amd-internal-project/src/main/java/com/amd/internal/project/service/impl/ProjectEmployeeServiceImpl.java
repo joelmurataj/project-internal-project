@@ -32,13 +32,14 @@ public class ProjectEmployeeServiceImpl implements ProjectEmployeeService {
 
 	@Override
 	@Transactional
-	public void save(ProjectEmployeeDto projectEmployeeDto) {
+	public ProjectEmployeeDto save(ProjectEmployeeDto projectEmployeeDto) {
 		if (projectEmployeeDto != null) {
 			Project project = projectDao.findById(projectEmployeeDto.getProjectId()).get();
 			int vacancy = project.getVacancy();
 			if (vacancy > 0) {
-				//IMPORTANT those comments are for future add employee when you place even the allocation too
-				
+				// IMPORTANT those comments are for future add employee when you place even the
+				// allocation too
+
 				// List<ProjectEmployee> projectEmployees =
 				// projectEmployeeDao.getProjectOfEmployee(
 				// projectEmployeeDto.getUserId(), projectEmployeeDto.getStartDateEmployee(),
@@ -50,13 +51,22 @@ public class ProjectEmployeeServiceImpl implements ProjectEmployeeService {
 				// }
 				// allocation += projectEmployeeDto.getAllocation();
 				// if (allocation <= 100) {
-				projectEmployeeDao.save(ProjectEmployeeConverter.toEmploeeProject(projectEmployeeDto));
+				ProjectEmployee projectemployee = projectEmployeeDao
+						.getProjectEmployee(projectEmployeeDto.getProjectId(), projectEmployeeDto.getUserId());
+				if (projectemployee == null) {
+					projectEmployeeDao.save(ProjectEmployeeConverter.toEmploeeProject(projectEmployeeDto));
+				} else {
+					projectEmployeeDto.setActivated(true);
+					projectEmployeeDao.update(ProjectEmployeeConverter.toEmploeeProject(projectEmployeeDto));
+				}
 				project.setVacancy(vacancy - 1);
+				return projectEmployeeDto;
 				// }
 				// }
 
 			}
 		}
+		return null;
 	}
 
 	@Override

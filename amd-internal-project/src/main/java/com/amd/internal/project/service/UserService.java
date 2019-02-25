@@ -20,4 +20,5 @@ public interface UserService extends UserDetailsService{
 	public UserDto removeUser(int id);
 	public UserDto getUser(int id);
 	public List<ProjectDto> getProjectsOfEmployee(int id);
+	public List<UserDto> retrieveAllEmployees(UserDto userDto);
 }

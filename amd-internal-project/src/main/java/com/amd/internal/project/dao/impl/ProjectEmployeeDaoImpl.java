@@ -28,17 +28,18 @@ public class ProjectEmployeeDaoImpl implements ProjectEmployeeDao {
 
 	@Override
 	@Transactional
-	public ProjectEmployee getProjectEmployee(int projectId, int userId) {
+	public ProjectEmployee getActivatedProjectEmployee(int projectId, int userId) {
 		ProjectEmployee listOfProjectEmployee = null;
 		try {
-			listOfProjectEmployee = (ProjectEmployee) entityManager.createQuery(
-					"select projectEmployee from ProjectEmployee projectEmployee where "
-					+ "projectEmployee.project.id =: projectId "
-					+ "and projectEmployee.user.id =: userId and projectEmployee.activated =1",
-					ProjectEmployee.class).setParameter("projectId", projectId).setParameter("userId", userId)
-					.getSingleResult();
+			listOfProjectEmployee = (ProjectEmployee) entityManager
+					.createQuery(
+							"select projectEmployee from ProjectEmployee projectEmployee where "
+									+ "projectEmployee.project.id =: projectId "
+									+ "and projectEmployee.user.id =: userId and projectEmployee.activated =1",
+							ProjectEmployee.class)
+					.setParameter("projectId", projectId).setParameter("userId", userId).getSingleResult();
 		} catch (Exception e) {
-			e.printStackTrace();
+			return null;
 		}
 		return listOfProjectEmployee;
 	}
@@ -132,17 +133,31 @@ public class ProjectEmployeeDaoImpl implements ProjectEmployeeDao {
 	public List<ProjectEmployee> getCurrentProjectEmployee(int userId, Date date) {
 		List<ProjectEmployee> listOfProjectEmployee = null;
 		try {
-			listOfProjectEmployee = (List<ProjectEmployee>) entityManager.createQuery(
-					"select projectEmployee from ProjectEmployee projectEmployee where"
-					+ " :date between projectEmployee.startDateEmployee and projectEmployee.finishedDateEmployee"
-					+ " and projectEmployee.user.id =: userId and projectEmployee.activated =1",
-					ProjectEmployee.class).setParameter("date", date).setParameter("userId", userId).setMaxResults(1).getResultList();
+			listOfProjectEmployee = (List<ProjectEmployee>) entityManager
+					.createQuery("select projectEmployee from ProjectEmployee projectEmployee where"
+							+ " :date between projectEmployee.startDateEmployee and projectEmployee.finishedDateEmployee"
+							+ " and projectEmployee.user.id =: userId and projectEmployee.activated =1",
+							ProjectEmployee.class)
+					.setParameter("date", date).setParameter("userId", userId).setMaxResults(1).getResultList();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return listOfProjectEmployee;
 	}
-	
-	
+
+	@Override
+	public ProjectEmployee getProjectEmployee(int projectId, int userId) {
+		ProjectEmployee listOfProjectEmployee = null;
+		try {
+			listOfProjectEmployee = (ProjectEmployee) entityManager
+					.createQuery("select projectEmployee from ProjectEmployee projectEmployee where "
+							+ "projectEmployee.project.id =: projectId " + "and projectEmployee.user.id =: userId",
+							ProjectEmployee.class)
+					.setParameter("projectId", projectId).setParameter("userId", userId).getSingleResult();
+		} catch (Exception e) {
+			return null;
+		}
+		return listOfProjectEmployee;
+	}
 
 }

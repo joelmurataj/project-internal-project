@@ -3,6 +3,7 @@ package com.amd.internal.project.service.impl;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import javax.transaction.Transactional;
 
@@ -37,17 +38,16 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
 	@Override
 	public UserDto findByEmail(String email) {
-		return UserConverter.toUserDto(userDao.findByEmail(email));
+		return UserConverter.toUserDto(userDao.findByEmailAndIsActivated(email, true));
 	}
 
 	@Override
 	@Transactional
 	public UserDto loadUserByUsername(String username) throws UsernameNotFoundException {
-		UserDto userDto = UserConverter.toJwtUser(userDao.findByEmail(username));
+		UserDto userDto = UserConverter.toJwtUser(userDao.findByEmailAndIsActivated(username, true));
 		if (userDto == null) {
 			throw new UsernameNotFoundException(String.format("USER_NOT_FOUND '%s'.", username));
 		}
-
 		return userDto;
 	}
 
@@ -102,6 +102,25 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 	}
 
 	@Override
+	public List<UserDto> retrieveAllEmployees(UserDto userDto) {
+		List<UserDto> employees = null;
+		if (userDto.getRankId() != 0) {
+			employees = UserConverter
+					.toUserListDto(userDao.filterUsers(2, userDto.getRankId(), userDto.getFirstName()));
+		} else {
+			employees = UserConverter.toUserListDto(userDao.filterUsersWithoutRank(2, userDto.getFirstName()));
+		}
+		for (int i = 0; i < employees.size(); i++) {
+			List<ProjectEmployee> currentProject = projectemployeeDao
+					.getCurrentProjectEmployee(employees.get(i).getId(), new Date());
+			if (!currentProject.isEmpty()) {
+				employees.get(i).setCurrentProject(currentProject.get(0).getProject().getName());
+			}
+		}
+		return employees;
+	}
+
+	@Override
 	@Transactional
 	public UserDto saveUser(UserDto userDto) {
 		UserDto user = findByEmail(userDto.getEmail());
@@ -127,7 +146,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 		List<Project> projects = user.getProjects();
 		if (user.getProjects() != null) {
 			for (int i = 0; i < projects.size(); i++) {
-				if (projects.get(i).isFlag()) {
+				if (projectemployeeDao.getActivatedProjectEmployee(projects.get(i).getId(), id) != null) {
 					exist = true;
 					break;
 				}
@@ -142,15 +161,19 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
 	@Override
 	public UserDto getUser(int id) {
-		UserDto userDto = UserConverter.toUserDto(userDao.findById(id).get());
-		if (userDto.isFlag()) {
-			List<ProjectEmployee> currentProject = projectemployeeDao.getCurrentProjectEmployee(userDto.getId(),
-					new Date());
-			if (!currentProject.isEmpty()) {
-				userDto.setCurrentProject(currentProject.get(0).getProject().getName());
+		try {
+			UserDto userDto = UserConverter.toUserDto(userDao.findById(id).get());
+			if (userDto.isFlag()) {
+				List<ProjectEmployee> currentProject = projectemployeeDao.getCurrentProjectEmployee(userDto.getId(),
+						new Date());
+				if (!currentProject.isEmpty()) {
+					userDto.setCurrentProject(currentProject.get(0).getProject().getName());
+				}
+				return userDto;
+			} else {
+				return null;
 			}
-			return userDto;
-		} else {
+		} catch (NoSuchElementException e) {
 			return null;
 		}
 
@@ -164,7 +187,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 		if (user != null) {
 			List<ProjectDto> listOfProjectDto = ProjectConverter.toProjectListDto(user.getProjects());
 			for (ProjectDto projectDto : listOfProjectDto) {
-				ProjectEmployee listOfProjectEmployee = projectemployeeDao.getProjectEmployee(projectDto.getId(), id);
+				ProjectEmployee listOfProjectEmployee = projectemployeeDao
+						.getActivatedProjectEmployee(projectDto.getId(), id);
 				if (listOfProjectEmployee != null) {
 					projectDto.setStartDateOfEmployee(listOfProjectEmployee.getStartDateEmployee());
 					projectDto.setFinishedDateOfEmployee(listOfProjectEmployee.getFinishedDateEmployee());

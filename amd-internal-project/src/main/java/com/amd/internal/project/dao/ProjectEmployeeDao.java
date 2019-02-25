@@ -26,4 +26,6 @@ public interface ProjectEmployeeDao {
 	public ArrayList<ProjectEmployee> getAllProjectsEmployeeWithinTheDates(Date startDate, Date finishedDate);
 	
 	public List<ProjectEmployee> getCurrentProjectEmployee(int userId, Date date);
+
+	public ProjectEmployee getActivatedProjectEmployee(int projectId, int userId);
 }

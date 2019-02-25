@@ -7,7 +7,7 @@ import com.amd.internal.project.dto.UserDto;
 
 public interface ProjectEmployeeService {
 
-	public void save(ProjectEmployeeDto projectEmployee);
+	public ProjectEmployeeDto save(ProjectEmployeeDto projectEmployee);
 	
 	public void remove(int projectId, int userId);
 	public void update(ProjectEmployeeDto projectEmployee);

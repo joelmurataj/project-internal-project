@@ -2,6 +2,7 @@ package com.amd.internal.project.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -33,10 +34,14 @@ public class ProjectServiceImpl implements ProjectService {
 	@Override
 	@Transactional
 	public ProjectDto findById(int projectId) {
-		Project project = projectdao.findById(projectId).get();
-		if (project.isFlag()) {
-			return ProjectConverter.toProjectDto(project);
-		} else {
+		try {
+			Project project = projectdao.findById(projectId).get();
+			if (project.isFlag()) {
+				return ProjectConverter.toProjectDto(project);
+			} else {
+				return null;
+			}
+		} catch (NoSuchElementException e) {
 			return null;
 		}
 	}
@@ -61,8 +66,9 @@ public class ProjectServiceImpl implements ProjectService {
 			projectDto.setDepartamentId(userLoggedIn.getDepartamentId());
 			projectDto.setVacancy(projectDto.getMaxOfEmployee());
 			projectdao.save(ProjectConverter.toProject(projectDto));
+			return projectDto;
 		}
-		return projectDto;
+		return null;
 	}
 
 	@Override
@@ -86,7 +92,7 @@ public class ProjectServiceImpl implements ProjectService {
 				.isEmpty()) {
 			Project project = projectdao.findById(projectId).get();
 			int vacancy = projectDto.getMaxOfEmployee() - project.getMaxOfEmployee();
-			if (project.getVacancy() + vacancy>=0) {
+			if (project.getVacancy() + vacancy >= 0) {
 				project.setProjectDetail(projectDto.getProjectDetail());
 				project.setStartDate(projectDto.getStartDate());
 				project.setFinishedDate(projectDto.getFinishedDate());
@@ -119,13 +125,12 @@ public class ProjectServiceImpl implements ProjectService {
 		ProjectDto project = findById(id);
 		List<UserDto> listOfUserDto = UserConverter.toUserListDto(project.getEmployees());
 		for (UserDto userDto : listOfUserDto) {
-			ProjectEmployee listOfProjectEmployee = projectEmployeedao.getProjectEmployee(id,
-					userDto.getId());
-					if (listOfProjectEmployee !=null) {
-						userDto.setStartDateInProject(listOfProjectEmployee.getStartDateEmployee());
-						userDto.setFinishedDateInProject(listOfProjectEmployee.getFinishedDateEmployee());
-						userDto.setAllocation(listOfProjectEmployee.getAllocation());
-						listOfUserDto1.add(userDto);
+			ProjectEmployee listOfProjectEmployee = projectEmployeedao.getActivatedProjectEmployee(id, userDto.getId());
+			if (listOfProjectEmployee != null) {
+				userDto.setStartDateInProject(listOfProjectEmployee.getStartDateEmployee());
+				userDto.setFinishedDateInProject(listOfProjectEmployee.getFinishedDateEmployee());
+				userDto.setAllocation(listOfProjectEmployee.getAllocation());
+				listOfUserDto1.add(userDto);
 			}
 		}
 		return listOfUserDto1;
