@@ -8,7 +8,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.amd.internal.project.entity.Project;
-import com.amd.internal.project.entity.ProjectEmployee;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -38,7 +37,6 @@ public class UserDto implements UserDetails {
 	private Date finishedDateInProject;
 	private int allocation;
 	private String currentProject;
-	
 	public UserDto() {
 		List<SimpleGrantedAuthority> authorities = new ArrayList<SimpleGrantedAuthority>();
 		this.authorities = authorities;

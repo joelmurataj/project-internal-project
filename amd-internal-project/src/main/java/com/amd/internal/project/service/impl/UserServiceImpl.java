@@ -18,6 +18,7 @@ import com.amd.internal.project.converter.ProjectConverter;
 import com.amd.internal.project.converter.UserConverter;
 import com.amd.internal.project.dao.ProjectEmployeeDao;
 import com.amd.internal.project.dao.UserDao;
+import com.amd.internal.project.dto.PasswordDto;
 import com.amd.internal.project.dto.ProjectDto;
 import com.amd.internal.project.dto.UserDto;
 import com.amd.internal.project.entity.Project;
@@ -84,6 +85,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 		Rank rank = new Rank();
 		rank.setIdRank(userDto.getRankId());
 		user.setRank(rank);
+		user.setFirstName(userDto.getFirstName());
+		user.setLastName(userDto.getLastName());
 	}
 
 	@Override
@@ -198,6 +201,20 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 			}
 		}
 		return listOfProjectDto1;
+	}
+
+	@Override
+	@Transactional
+	public PasswordDto changePassword(PasswordDto passwordDto) {
+		UserDto userDto = (UserDto) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+		User user = userDao.findById(userDto.getId()).get();
+		if(encoder.matches(passwordDto.getOldPassword(), userDto.getPassword())) {
+			String newPassword=encoder.encode(passwordDto.getNewPassword());
+			user.setPassword(newPassword);
+			return passwordDto;
+		}
+		return null;
 	}
 
 }

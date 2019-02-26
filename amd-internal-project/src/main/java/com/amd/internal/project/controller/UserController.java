@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.amd.internal.project.dao.RankDao;
+import com.amd.internal.project.dto.PasswordDto;
 import com.amd.internal.project.dto.ProjectDto;
 import com.amd.internal.project.dto.UserDto;
 import com.amd.internal.project.entity.Rank;
@@ -30,10 +31,11 @@ public class UserController {
 	@Autowired
 	private RankDao rankDao;
 	
-	@RequestMapping(path = "/{email}", method = RequestMethod.GET)
-    public UserDto getProject(@PathVariable String email) {
+	@RequestMapping(path = "/userLogged", method = RequestMethod.GET)
+    public UserDto getProject() {
 		UserDto userDto = (UserDto) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-    	return userDto;
+		UserDto userLogged=userService.getUser(userDto.getId());
+    	return userLogged;
     }
 	
 //	@RequestMapping(path = "projectInfo/{id}", method = RequestMethod.GET)
@@ -64,9 +66,9 @@ public class UserController {
     	return rankDao.findAll();
     }
 	
-	@PreAuthorize("hasAuthority('manager')")
 	@RequestMapping(path = "/updateUser", method = RequestMethod.PUT)
     public void updateUser(@RequestBody UserDto userDto) {
+		System.out.println("po");
     	userService.updateUser(userDto);
     }
 	
@@ -92,15 +94,21 @@ public class UserController {
     }
 	
 	@PreAuthorize("hasAuthority('manager')")
-	@RequestMapping(path = "userInfo/{id}", method = RequestMethod.GET)
+	@RequestMapping(path = "/userInfo/{id}", method = RequestMethod.GET)
 	public List<ProjectDto> getProjectsOfProject(@PathVariable int id) {
 
 		return userService.getProjectsOfEmployee(id);
 	}
 	
-	@RequestMapping(path = "projectsOfUser", method = RequestMethod.GET)
+	@PreAuthorize("hasAuthority('employee')")
+	@RequestMapping(path = "/projectsOfUser", method = RequestMethod.GET)
 	public List<ProjectDto> getProjectsOfUser() {
 		UserDto userDto= (UserDto) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		return userService.getProjectsOfEmployee(userDto.getId());
+	}
+	
+	@RequestMapping(path = "/changePassword", method = RequestMethod.PUT)
+	public PasswordDto changePassword( @RequestBody PasswordDto passwordDto) {
+		return userService.changePassword(passwordDto);
 	}
 }

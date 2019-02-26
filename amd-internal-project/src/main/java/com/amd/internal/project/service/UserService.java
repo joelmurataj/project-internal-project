@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
+import com.amd.internal.project.dto.PasswordDto;
 import com.amd.internal.project.dto.ProjectDto;
 import com.amd.internal.project.dto.UserDto;
 
@@ -21,4 +22,5 @@ public interface UserService extends UserDetailsService{
 	public UserDto getUser(int id);
 	public List<ProjectDto> getProjectsOfEmployee(int id);
 	public List<UserDto> retrieveAllEmployees(UserDto userDto);
+	public PasswordDto changePassword(PasswordDto passwordDto);
 }
