@@ -102,6 +102,7 @@ public class ProjectServiceImpl implements ProjectService {
 				int vacancyAddded = projectDto.getMaxOfEmployee() - project.getMaxOfEmployee();
 				project.setVacancy(project.getVacancy() + vacancyAddded);
 				project.setMaxOfEmployee(projectDto.getMaxOfEmployee());
+				project.setTechnologies(projectDto.getTechnologies());
 				return ProjectConverter.toProjectDto(project);
 			}
 		}

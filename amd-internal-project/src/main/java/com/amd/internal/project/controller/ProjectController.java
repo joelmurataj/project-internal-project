@@ -14,9 +14,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.amd.internal.project.dao.StatusDao;
+import com.amd.internal.project.dao.TechnologyDao;
 import com.amd.internal.project.dto.ProjectDto;
 import com.amd.internal.project.dto.UserDto;
 import com.amd.internal.project.entity.Status;
+import com.amd.internal.project.entity.Technology;
 import com.amd.internal.project.service.ProjectService;
 
 @RestController
@@ -28,6 +30,9 @@ public class ProjectController {
 
 	@Autowired
 	private StatusDao statusDao;
+	
+	@Autowired
+	private TechnologyDao technologyDao;
 
 	@PreAuthorize("hasAuthority('manager')")
 	@RequestMapping(path = "/projects", method = RequestMethod.GET)
@@ -85,6 +90,12 @@ public class ProjectController {
 	public List<Status> retrieveAllRanks() {
 
 		return statusDao.getEditableStatus();
+	}
+	
+	@RequestMapping(path = "/allTechnologies", method = RequestMethod.GET)
+	public List<Technology> retrieveAllTechnologies() {
+
+		return technologyDao.findByIsActivated(true);
 	}
 
 }

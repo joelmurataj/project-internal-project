@@ -29,6 +29,18 @@ public class ProjectConverter {
 			if (!project.getEmployees().isEmpty()) {
 				projectDto.setEmployees(project.getEmployees());
 			}
+			if (!project.getTechnologies().isEmpty()) {
+				projectDto.setTechnologies(project.getTechnologies());
+
+				String lists = "";
+				for (int i = 0; i < project.getTechnologies().size() - 1; i++) {
+					lists += project.getTechnologies().get(i).getTechnologyName() + ", ";
+				}
+				if (!project.getTechnologies().isEmpty()) {
+					lists +=  project.getTechnologies().get(project.getTechnologies().size() - 1).getTechnologyName();
+				}
+				projectDto.setTechnologiesInString(lists);
+			}
 			return projectDto;
 		} else {
 			return null;
@@ -80,6 +92,9 @@ public class ProjectConverter {
 			project.setStatus(status);
 			if (projectDto.getEmployees() !=null) {
 				project.setEmployees(projectDto.getEmployees());
+			}
+			if(projectDto.getTechnologies()!=null) {
+				project.setTechnologies(projectDto.getTechnologies());
 			}
 			return project;
 		} else {

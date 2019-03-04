@@ -46,7 +46,6 @@ public class LoginController {
 	public ResponseEntity<?> createAuthenticationToken(@RequestBody TokenRequest authenticationRequest)
 			throws AuthenticationException {
 		authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
-
 		final UserDto userDetails = (UserDto) userService.loadUserByUsername(authenticationRequest.getUsername());
 
 		final String token = jwtTokenUtil.generateToken(userDetails);
@@ -56,8 +55,10 @@ public class LoginController {
 
 	@RequestMapping(value = "${jwt.refresh.token.uri}", method = RequestMethod.GET)
 	public ResponseEntity<?> refreshAndGetAuthenticationToken(HttpServletRequest request) {
+		
 		String authToken = request.getHeader(tokenHeader);
 		final String token = authToken.substring(7);
+		
 		String username = jwtTokenUtil.getUsernameFromToken(token);
 		UserDto user = (UserDto) userService.loadUserByUsername(username);
 		if (jwtTokenUtil.canTokenBeRefreshed(token)) {

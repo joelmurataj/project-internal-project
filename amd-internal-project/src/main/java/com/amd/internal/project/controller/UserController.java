@@ -46,6 +46,7 @@ public class UserController {
 	@PreAuthorize("hasAuthority('manager')")
 	@RequestMapping(path = "employees", method = RequestMethod.PUT)
     public List<UserDto> getEmployees(@RequestBody ProjectDto projectdto) {
+		System.out.println(projectdto.getName());
     	return userService.findByRole(projectdto);
     }
 	

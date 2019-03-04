@@ -28,7 +28,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private UnAuthorizedResponseAuthentication unAuthorizedResponseAuthentication;
 
     @Autowired
-    private UserService jwtInMemoryUserDetailsService;
+    private UserService userDetailsService;
 
     @Autowired
     private AuthorizationFilter authenticationTokenFilter;
@@ -36,10 +36,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Value("${jwt.get.token.uri}")
     private String authenticationPath;
 
+    @Value("${jwt.refresh.token.uri}")
+    private String refreshPath;
+    
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth
-            .userDetailsService(jwtInMemoryUserDetailsService)
+            .userDetailsService(userDetailsService)
             .passwordEncoder(passwordEncoderBean());
     }
 
@@ -80,6 +83,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 HttpMethod.POST,
                 authenticationPath
             )
+            
             .antMatchers(HttpMethod.OPTIONS, "/**")
             .and()
             .ignoring()

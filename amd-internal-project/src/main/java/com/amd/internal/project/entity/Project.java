@@ -73,6 +73,13 @@ public class Project implements Serializable{
 			inverseJoinColumns=@JoinColumn(name="user_id"))
 	private List<User> employees;
 	
+	@ManyToMany(fetch= FetchType.LAZY)
+	@JoinTable(
+			name= "project_technology",
+			joinColumns=@JoinColumn(name="project_id"),
+			inverseJoinColumns=@JoinColumn(name="technology_id"))
+	private List<Technology> technologies;
+	
 	public int getId() {
 		return id;
 	}
@@ -145,6 +152,12 @@ public class Project implements Serializable{
 	}
 	public void setStatus(Status status) {
 		this.status = status;
+	}
+	public List<Technology> getTechnologies() {
+		return technologies;
+	}
+	public void setTechnologies(List<Technology> technologies) {
+		this.technologies = technologies;
 	}
 	
 }

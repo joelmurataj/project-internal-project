@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
+import com.amd.internal.project.entity.Technology;
 import com.amd.internal.project.entity.User;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
@@ -31,6 +32,8 @@ public class ProjectDto implements Serializable {
 	private int allocationOfTheEmployee;
 	private Date startDateOfEmployee;
 	private Date finishedDateOfEmployee;
+	private List<Technology> technologies;
+	private String technologiesInString;
 	
 	public int getId() {
 		return id;
@@ -136,6 +139,18 @@ public class ProjectDto implements Serializable {
 	}
 	public void setFinishedDateOfEmployee(Date finishedDateOfEmployee) {
 		this.finishedDateOfEmployee = finishedDateOfEmployee;
+	}
+	public List<Technology> getTechnologies() {
+		return technologies;
+	}
+	public void setTechnologies(List<Technology> technologies) {
+		this.technologies = technologies;
+	}
+	public String getTechnologiesInString() {
+		return technologiesInString;
+	}
+	public void setTechnologiesInString(String technologiesInString) {
+		this.technologiesInString = technologiesInString;
 	}
 	
 }
