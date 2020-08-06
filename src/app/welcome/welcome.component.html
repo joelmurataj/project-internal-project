@@ -1,0 +1,120 @@
+<h1>Projects</h1>
+
+<div class="alert alert-success" *ngIf='messageSuccess'>{{messageSuccess}}</div>
+<div class="alert alert-warning" *ngIf='meesageFailed'><i class="material-icons">
+    warning
+  </i> {{meesageFailed}}</div>
+<mat-form-field class="example-full-width">
+  <input matInput placeholder="Search by project name" type="text" [(ngModel)]="nameOfTheProject" name="search">
+</mat-form-field>
+<button (click)="searchByNameOfTheProject()" mat-button color="primary"><i class="material-icons">
+    search
+  </i></button>
+  <button (click)="createProject()" mat-fab color="primary" style="left: 800px"><i class="material-icons">
+      add
+    </i></button>
+<div class="container">
+  <div *ngIf='!tableIsEmpty'>
+    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+
+
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef> Name </th>
+        <td mat-cell *matCellDef="let project" (click)="getInfoOfProject(project.id)"> {{project.name}} </td>
+      </ng-container>
+
+
+      <!-- <ng-container matColumnDef="pricePerMonth">
+      <th mat-header-cell *matHeaderCellDef> pricePerMonth </th>
+      <td mat-cell *matCellDef="let project"> {{project.pricePerMonth}} $</td>
+
+    </ng-container> -->
+
+      <ng-container matColumnDef="startDate">
+        <th mat-header-cell *matHeaderCellDef> startDate </th>
+        <td mat-cell *matCellDef="let project" style="padding-right: 70px;" (click)="getInfoOfProject(project.id)">
+          {{project.startDate | date:'yyyy-MM-dd'}} </td>
+      </ng-container>
+
+
+      <ng-container matColumnDef="finishedDate">
+        <th mat-header-cell *matHeaderCellDef> Finished date </th>
+        <td mat-cell *matCellDef="let project" style="padding-right: 70px;" (click)="getInfoOfProject(project.id)">
+          {{project.finishedDate | date:'yyyy-MM-dd'}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="departament">
+        <th mat-header-cell *matHeaderCellDef> Departament: </th>
+        <td mat-cell *matCellDef="let project" style="padding-right: 70px;" (click)="getInfoOfProject(project.id)">
+          {{project.departamentName}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="maxOfEmployees">
+        <th mat-header-cell *matHeaderCellDef> Max: </th>
+        <td mat-cell *matCellDef="let project" style="padding-right: 70px;" (click)="getInfoOfProject(project.id)">
+          {{project.maxOfEmployee}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="vacancy">
+        <th mat-header-cell *matHeaderCellDef> Vacancy: </th>
+        <td mat-cell *matCellDef="let project" style="padding-right: 70px;" (click)="getInfoOfProject(project.id)">
+          {{project.vacancy}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="status">
+        <th mat-header-cell *matHeaderCellDef> Status: </th>
+        <td mat-cell *matCellDef="let project" style="width: 10%" >
+          
+          <div *ngIf='!editable || projectId !== project.id' (click)="update(project.id)">
+            {{project.statusName}}
+          </div>
+          <div *ngIf='editable && projectId === project.id'>
+            <mat-form-field style="width: 50%">
+              <mat-select placeholder="Status" [(value)]="project.statusId">
+                <mat-option *ngFor="let status of listOfStatus" [value]="status.id">
+                  {{status.name}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div> </td>
+      </ng-container>
+      <!-- <ng-container matColumnDef="projectDetail" > 
+      <th mat-header-cell *matHeaderCellDef > projectDetail </th>
+      <td mat-cell *matCellDef="let project"> {{project.projectDetail}} </td>
+    </ng-container> -->
+
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef> </th>
+        <td mat-cell *matCellDef="let project">
+            <div *ngIf='!editable'> <button (click)="updateProject(project.id)" mat-button color="primary"><i
+              class="material-icons md-24">
+              edit
+            </i></button><button (click)="opendialog(project.name, project.id)" mat-button color="warn"><i
+              class="material-icons md-18">
+              delete
+            </i></button></div>
+            <div *ngIf='editable && projectId === project.id'><button (click)="updateStatusOfProject(project)" mat-button
+              color="primary"><i class="material-icons md-24">
+                edit
+              </i></button></div>
+          </td>
+
+        <!-- deleteProject(project.id) -->
+        <!-- <button (click)="getInfoOfProject(project.id)"  mat-button color="primary"><i class="material-icons">
+          info
+          </i></button></td> -->
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;let project"></tr>
+    </table>
+    <!-- (click)="getInfoOfProject(project.id)" -->
+    <mat-paginator [pageSizeOptions]="[5 , 10 ,20]" showFirstLastButtons></mat-paginator>
+  </div>
+  <div *ngIf='tableIsEmpty'>There is no project found</div>
+  <!-- <button (click)="createProject()" mat-fab color="primary"><i class="material-icons">
+      add
+    </i></button> -->
+
+
+</div>

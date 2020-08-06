@@ -1,0 +1,13 @@
+table {
+    width: 100%;
+  }
+  /* td.mat-cell, td.mat-footer-cell, th.mat-header-cell {
+      padding-right: 70px;
+  } */
+  .mat-column-select {
+    overflow: initial;
+  }
+  /* @media (min-width: 1200px){
+    .container {
+      max-width: 100%;
+  }} */

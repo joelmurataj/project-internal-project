@@ -1,0 +1,96 @@
+<h2>All employees</h2>
+
+<div class="container">
+  <mat-form-field class="example-full-width">
+    <input matInput placeholder="Search by firstname" type="text" [(ngModel)]="firstname" name="search">
+  </mat-form-field>
+  <button (click)="searchByFirstnameOfTheUser()" mat-button color="primary"><i class="material-icons">
+      search
+    </i></button>
+  <div *ngIf='!tableIsEmpty'>
+    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+
+
+      <ng-container matColumnDef="firstName">
+        <th mat-header-cell *matHeaderCellDef> Firstname </th>
+        <td mat-cell *matCellDef="let user"> {{user.firstName}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="lastName">
+        <th mat-header-cell *matHeaderCellDef> Lastname: </th>
+        <td mat-cell *matCellDef="let user"> {{user.lastName}} </td>
+
+      </ng-container>
+
+      <ng-container matColumnDef="email">
+        <th mat-header-cell *matHeaderCellDef> Email: </th>
+        <td mat-cell *matCellDef="let user"> {{user.email}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="rank">
+        <th mat-header-cell *matHeaderCellDef> Rank: </th>
+        <td mat-cell *matCellDef="let user"> {{user.rankName}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="startDate">
+        <th mat-header-cell *matHeaderCellDef> startDate: </th>
+        <td mat-cell *matCellDef="let this">
+          <mat-form-field appearance="outline">
+            <input matInput type="date" name="startDateEmployee"
+              [ngModel]="data.projectEmployee.startDateEmployee | date:'yyyy-MM-dd'"
+              (ngModelChange)="data.projectEmployee.startDateEmployee = $event" required="required"
+              min="{{data.project.startDate | date:'yyyy-MM-dd'}}"
+              max="{{data.projectEmployee.finishedDateEmployee | date:'yyyy-MM-dd'}}">
+          </mat-form-field>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="finishedDate">
+        <th mat-header-cell *matHeaderCellDef> finishedDate: </th>
+        <td mat-cell *matCellDef="let projectEmployee">
+          <mat-form-field appearance="outline">
+            <input matInput type="date" name="finishedDate"
+              [ngModel]="data.projectEmployee.finishedDateEmployee | date:'yyyy-MM-dd'"
+              (ngModelChange)="data.projectEmployee.finishedDateEmployee = $event" required="required"
+              min="{{data.projectEmployee.startDateEmployee | date:'yyyy-MM-dd'}}"
+              max="{{data.project.finishedDate | date:'yyyy-MM-dd'}}">
+
+          </mat-form-field>
+        </td>
+      </ng-container>
+
+      <!-- <ng-container matColumnDef="allocation">
+      <th mat-header-cell *matHeaderCellDef> Allocation: </th>
+      <td mat-cell *matCellDef="let projectEmployee">
+        <mat-form-field appearance="outline">
+          <input matInput type="number" name="allocation" [(ngModel)]="data.projectEmployee.allocation"
+            required="required" min="1" max="100">
+
+        </mat-form-field>
+      </td>
+    </ng-container> -->
+
+      <!-- <ng-container matColumnDef="allocation">
+      <th mat-header-cell *matHeaderCellDef> Allocation: </th>
+      <td mat-cell *matCellDef="let projectEmployee"> {{projectEmployee.allocation}} </td>
+    </ng-container> -->
+
+      <ng-container matColumnDef="selection">
+        <th mat-header-cell *matHeaderCellDef> Select: </th>
+        <td mat-cell *matCellDef="let user;"> <button [mat-dialog-close]="user" mat-button><i class="material-icons">
+              add_box
+            </i></button> </td>
+      </ng-container>
+      <!-- (click)="saveProjectEmployee(user.id, data.projectId, startDateEmployee, finishedDateEmployee)" -->
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+
+    </table>
+
+    <mat-paginator [pageSizeOptions]="[5]" showFirstLastButtons></mat-paginator>
+  </div>
+  <div *ngIf='tableIsEmpty'>There is no project found</div>
+
+</div>

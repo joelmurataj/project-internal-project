@@ -1,0 +1,27 @@
+<h4> Edit project: </h4>
+<div class="container">
+  <fieldset class="form-group">
+    <mat-form-field appearance="outline">
+      <mat-label>Start Date:</mat-label>
+      <input matInput type="date" name="startDate" [ngModel]="data.employee.startDateInProject | date:'yyyy-MM-dd'"
+        (ngModelChange)="data.employee.startDateInProject = $event" required="required"
+        min="{{data.project.startDate | date:'yyyy-MM-dd'}}" max="{{data.employee.finishedDateInProject | date:'yyyy-MM-dd'}}">
+
+    </mat-form-field>
+  </fieldset>
+  <fieldset class="form-group">
+    <mat-form-field appearance="outline">
+      <mat-label>Finished Date:</mat-label>
+      <input matInput type="date" name="finishedDate"
+        [ngModel]="data.employee.finishedDateInProject | date:'yyyy-MM-dd'"
+        (ngModelChange)="data.employee.finishedDateInProject = $event" required="required"
+        min="{{data.employee.startDateInProject | date:'yyyy-MM-dd'}}"
+        max="{{data.project.finishedDate | date:'yyyy-MM-dd'}}">
+
+    </mat-form-field>
+
+  </fieldset>
+  <button [mat-dialog-close]="data.employee" mat-fab color="primary"><i class="material-icons">
+      check
+    </i></button>
+</div>

@@ -1,0 +1,20 @@
+<h4>Profile:</h4>
+<div class="alert alert-success" *ngIf='messageSuccess'> {{messageSuccess}}</div>
+<b>FirstName </b>: {{user?.firstName}}
+<br><br>
+<b> LastName </b> : {{user?.lastName}}
+<br><br>
+<b> Email </b> : {{user?.email}}
+<br><br>
+<b> Departament </b> : {{user?.departamentName}}
+<br><br>
+<b>Start Date </b> : {{user?.startDate | date:'yyyy-MM-dd'}}
+<br><br>
+<b>Current Project </b> : {{user?.currentProject}}
+<br><br>
+<b>Rank </b> : {{user?.rankName}}
+<br><br>
+
+<button (click)="opendialog()" mat-fab color="primary"><i class="material-icons">
+    edit
+  </i></button>

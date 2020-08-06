@@ -1,0 +1,28 @@
+<div class="container">
+        <div class="alert alert-warning" *ngIf="userForm.dirty && userForm.invalid">Enter valid values</div>
+        <form (ngSubmit)="!userForm.invalid " #userForm="ngForm">
+      
+          <fieldset class="form-group">
+            <label>FirstName:</label>
+            <input type="text" name="firstName" class="form-control" [(ngModel)]="data.userUpdated.firstName" required="required" minlength="3" maxlength="34">
+          </fieldset>
+          <fieldset class="form-group">
+            <label>LastName:</label>
+            <input type="text" name="lastName" class="form-control" [(ngModel)]="data.userUpdated.lastName" required="required" minlength="3" maxlength="34">
+          </fieldset>
+      
+          <!-- <fieldset class="form-group">
+            <mat-form-field appearance="outline">
+              <mat-label>Start Date:</mat-label>
+              <input matInput type="date" name="startDate" [ngModel]="user.startDate | date:'yyyy-MM-dd'"
+                (ngModelChange)="user.startDate = $event" required="required">
+      
+            </mat-form-field>
+          </fieldset> -->
+          <div *ngIf="!userForm.invalid">
+          <button type="submit" mat-fab color="primary" [mat-dialog-close]="data.userUpdated"><i class="material-icons">
+              done
+            </i></button>
+        </div>
+        </form>
+      </div>

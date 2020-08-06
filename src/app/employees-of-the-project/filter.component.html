@@ -1,0 +1,39 @@
+<h4> Filter: </h4>
+<div class="container">
+
+    <fieldset class="form-group">
+        <mat-form-field appearance="outline">
+            <mat-label>FirstName of employee:</mat-label>
+            <input matInput type="text" name="firstName" [(ngModel)]="data.employee.firstName">
+
+        </mat-form-field>
+
+    </fieldset>
+
+    <fieldset class="form-group">
+        <mat-form-field appearance="outline">
+            <mat-label>Start Date:</mat-label>
+            <input matInput type="date" name="startDate"
+                [ngModel]="data.employee.startDateInProject | date:'yyyy-MM-dd'"
+                (ngModelChange)="data.employee.startDateInProject = $event"
+                min="{{data.project.startDate | date:'yyyy-MM-dd'}}"
+                max="{{data.project.finishedDate | date:'yyyy-MM-dd'}}">
+
+        </mat-form-field>
+    </fieldset>
+    <fieldset class="form-group">
+        <mat-form-field appearance="outline">
+            <mat-label>Finished Date:</mat-label>
+            <input matInput type="date" name="finishedDate"
+                [ngModel]="data.employee.finishedDateInProject | date:'yyyy-MM-dd'"
+                (ngModelChange)="data.employee.finishedDateInProject = $event"
+                min="{{data.employee.startDateInProject | date:'yyyy-MM-dd'}}"
+                max="{{data.project.finishedDate | date:'yyyy-MM-dd'}}">
+
+        </mat-form-field>
+
+    </fieldset>
+    <button [mat-dialog-close]="data.employee" mat-fab color="primary"><i class="material-icons">
+            search
+        </i></button>
+</div>

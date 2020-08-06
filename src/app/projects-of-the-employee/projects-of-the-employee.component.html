@@ -1,0 +1,90 @@
+<div class="alert alert-warning" *ngIf='userNotFound'><i class="material-icons">
+    warning
+  </i> {{userNotFound}}</div>
+<div *ngIf='!userNotFound'>
+  <h1>Employee</h1>
+  <br><br>
+  <b>FirstName </b>: {{employee?.firstName}}
+  <br><br>
+  <b> LastName </b> : {{employee?.lastName}}
+  <br><br>
+  <b> Email </b> : {{employee?.email}}
+  <br><br>
+  <b> Departament </b> : {{employee?.departamentName}}
+  <br><br>
+  <b>Start Date </b> : {{employee?.startDate | date:'yyyy-MM-dd'}}
+  <br><br>
+  <b>Current Project </b> : {{employee?.currentProject}}
+  <br><br>
+  <b>Rank </b> : {{employee?.rankName}}
+  <br><br>
+  <h4>Projects Of the employee</h4>
+  <div class="container">
+    <div *ngIf='!tableIsEmpty'>
+      <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+
+
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef> Title: </th>
+          <td mat-cell *matCellDef="let project"> {{project.name}} </td>
+        </ng-container>
+
+
+        <ng-container matColumnDef="departamentName">
+          <th mat-header-cell *matHeaderCellDef> Departament: </th>
+          <td mat-cell *matCellDef="let project"> {{project.departamentName}} </td>
+
+        </ng-container>
+
+        <ng-container matColumnDef="startDate">
+          <th mat-header-cell *matHeaderCellDef> Start date: </th>
+          <td mat-cell *matCellDef="let project"> {{project.startDate | date:'yyyy-MM-dd'}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="finishedDate">
+          <th mat-header-cell *matHeaderCellDef> Finish date: </th>
+          <td mat-cell *matCellDef="let project"> {{project.finishedDate | date:'yyyy-MM-dd'}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="statusName">
+          <th mat-header-cell *matHeaderCellDef> Status: </th>
+          <td mat-cell *matCellDef="let project"> {{project.statusName}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="allocationOfTheEmployee">
+          <th mat-header-cell *matHeaderCellDef> Allocation: </th>
+          <td mat-cell *matCellDef="let project"> {{project.allocationOfTheEmployee}} %</td>
+        </ng-container>
+
+        <ng-container matColumnDef="startDateOfEmployee">
+          <th mat-header-cell *matHeaderCellDef> Start date Of Employee: </th>
+          <td mat-cell *matCellDef="let project"> {{project.startDateOfEmployee | date:'yyyy-MM-dd'}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="finishedDateOfEmployee">
+          <th mat-header-cell *matHeaderCellDef> Finished date Of Employee: </th>
+          <td mat-cell *matCellDef="let project"> {{project.finishedDateOfEmployee | date:'yyyy-MM-dd'}} </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+
+      </table>
+
+      <mat-paginator [pageSizeOptions]="[5]" showFirstLastButtons></mat-paginator>
+
+      <div class="alert alert-success" *ngIf='messageSuccess'>{{messageSuccess}}</div>
+      <div class="alert alert-warning" *ngIf='meesageFailed'><i class="material-icons">
+          warning
+        </i> {{meesageFailed}}</div>
+    </div>
+    <div *ngIf='tableIsEmpty'>The employee isn't working in any project</div>
+    <br><br>
+    <button (click)="opendialog()" style="background-color: rgba(255, 0, 0, 0.774)">Delete The employee</button>
+    <!-- <button mat-button (click)="opendialogAddEmployeeToProject()" mat-fab color="primary"><i class="material-icons">
+        add
+      </i></button> -->
+
+  </div>
+</div>

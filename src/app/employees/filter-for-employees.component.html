@@ -1,0 +1,34 @@
+<h4> Filter: </h4>
+<div class="container">
+
+    <fieldset class="form-group">
+        <mat-form-field appearance="outline">
+            <mat-label>FirstName of employee:</mat-label>
+            <input matInput type="text" name="firstName" [(ngModel)]="data.user.firstName">
+
+        </mat-form-field>
+
+    </fieldset>
+
+    <!-- <fieldset class="form-group">
+        <mat-form-field appearance="outline">
+            <mat-label>Start Date:</mat-label>
+            <input matInput type="date" name="startDate"
+                [ngModel]="data.user.startDate | date:'yyyy-MM-dd'"
+                (ngModelChange)="data.user.startDate = $event">
+
+        </mat-form-field>
+    </fieldset> -->
+    <mat-form-field style="width: 50%">
+        <mat-select placeholder="Rank" [(value)]="data.user.rankId">
+            <mat-option *ngFor="let rank of ranks" [value]="rank.idRank">
+                {{rank.name}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+    <br><br>
+
+    <button [mat-dialog-close]="data.user" mat-fab color="primary"><i class="material-icons">
+            search
+        </i></button>
+</div>

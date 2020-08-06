@@ -1,0 +1,31 @@
+/* table {
+    width: 100%;
+  }
+  td.mat-cell, td.mat-footer-cell, th.mat-header-cell {
+      padding-right: 70px;
+  }
+  .mat-column-select {
+    overflow: initial;
+  }
+  .container {
+    width: 100%;
+    padding-right: 0px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+}
+td.mat-cell[_ngcontent-c2], td.mat-footer-cell[_ngcontent-c2], th.mat-header-cell[_ngcontent-c2] {
+  padding-right: 0px;
+}
+*, ::after, ::before {
+  box-sizing: inherit;
+} */
+table {
+  width: 100%;
+}
+/* td.mat-cell, td.mat-footer-cell, th.mat-header-cell {
+    padding-right: 70px;
+} */
+.mat-column-select {
+  overflow: initial;
+}

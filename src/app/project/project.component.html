@@ -1,0 +1,86 @@
+<div class="alert alert-warning" *ngIf='projectNotFound'><i class="material-icons">
+    warning
+  </i> {{projectNotFound}}</div>
+<div *ngIf='!projectNotFound'>
+  <h1>Project : {{project.name}}</h1>
+  <div class="alert alert-warning" *ngIf='messageProblem'><i class="material-icons">
+      warning
+    </i> {{messageProblem}}</div>
+  <div class="container">
+    <div class="alert alert-warning" *ngIf="projectForm.dirty && projectForm.invalid">Enter valid values</div>
+    <form (ngSubmit)="!projectForm.invalid && saveProject()" #projectForm="ngForm">
+      <div *ngIf="!updating">
+        <fieldset class="form-group">
+          <label>Name:</label>
+          <input type="text" name="name" class="form-control" [(ngModel)]="project.name" required="required"
+            style="width: 30%" minlength="3" maxlength="34">
+        </fieldset>
+        <fieldset class="form-group">
+          <label>Price Per Month:</label>
+          <input type="number" name="pricePerMonth" class="form-control" [(ngModel)]="project.pricePerMonth"
+            required="required" style="width: 10%">
+        </fieldset>
+        <!-- <fieldset class="form-group">
+        <mat-form-field>
+          <input matInput placeholder="Price per Month" type="number" name="pricePerMonth" class="form-control"
+            [(ngModel)]="project.pricePerMonth" required="required">
+
+        </mat-form-field>
+      </fieldset> -->
+      </div>
+      <fieldset class="form-group">
+        <label>Project Detail:</label>
+        <textarea name="projectdetail" class="form-control" [(ngModel)]="project.projectDetail" required="required"
+          rows="10" minlength="10"></textarea>
+      </fieldset>
+
+      <!-- <fieldset class="form-group">
+    <mat-form-field class="example-full-width">
+        <textarea matInput placeholder="Project Detail:" name="projectdetail" [(ngModel)]="project.projectDetail" required="required" rows="4"></textarea>
+      </mat-form-field>
+    </fieldset> -->
+      <!-- <fieldset class="form-group">
+      <label>Start Date:</label>
+      <input type="date" name="startDate" class="form-control" [ngModel]="project.startDate | date:'yyyy-MM-dd'"
+        (ngModelChange)="project.startDate = $event" required="required">
+    </fieldset> -->
+      <fieldset class="form-group">
+        <mat-form-field appearance="outline">
+          <mat-label>Start Date:</mat-label>
+          <input matInput type="date" name="startDate" [ngModel]="project.startDate | date:'yyyy-MM-dd'"
+            (ngModelChange)="project.startDate = $event" required="required">
+
+        </mat-form-field>
+      </fieldset>
+      <fieldset class="form-group">
+        <mat-form-field appearance="outline">
+          <mat-label>Finished Date:</mat-label>
+          <input matInput type="date" name="finishedDate" [ngModel]="project.finishedDate | date:'yyyy-MM-dd'"
+            (ngModelChange)="project.finishedDate = $event" required="required"
+            min="{{project.startDate | date:'yyyy-MM-dd'}}">
+
+        </mat-form-field>
+      </fieldset>
+      <div *ngIf="updating">
+        <b> Technologies</b> : {{project?.technologiesInString}}
+        <br><br>
+      </div>
+      <mat-form-field>
+        <mat-select placeholder="Technologies" multiple [(value)]="project.technologies">
+          <mat-option *ngFor="let technology of technologies" [value]="technology">{{technology.technologyName}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <fieldset class="form-group">
+        <label>Max Of Employee:</label>
+        <input type="number" name="maxOfEmployee" class="form-control" [(ngModel)]="project.maxOfEmployee"
+          required="required" style="width: 10%" min="1">
+      </fieldset>
+      <button type="submit" mat-fab color="primary"><i class="material-icons">
+          check
+        </i></button>
+    </form>
+  </div>
+  <br><br>
+</div>
